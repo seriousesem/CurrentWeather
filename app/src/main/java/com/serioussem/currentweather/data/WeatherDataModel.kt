@@ -5,4 +5,6 @@ import com.serioussem.currentweather.domain.WeatherDomainModel
 
 sealed class WeatherDataModel : Abstract.Object<WeatherDomainModel, Abstract.Mapper.Empty>() {
 
+//    class Success(private val temperature: Double) : WeatherDataModel()
+
 }

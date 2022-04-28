@@ -3,9 +3,9 @@ package com.serioussem.currentweather.data.net
 
 import com.google.gson.annotations.SerializedName
 import com.serioussem.currentweather.core.Abstract
-import com.serioussem.currentweather.data.WeatherDataModel
+import com.serioussem.currentweather.data.DataModel
 
-data class WeatherServerModel(
+data class ServerModel(
 
     @field:SerializedName("visibility")
     val visibility: Int? = null,
@@ -45,11 +45,11 @@ data class WeatherServerModel(
 
     @field:SerializedName("wind")
     val wind: Wind? = null
-) : Abstract.Object<WeatherDataModel, WeatherServerModelToDataModelMapper>() {
+) : Abstract.Object<DataModel, ServerModelToDataModelMapper>() {
 
-    override fun map(mapper: WeatherServerModelToDataModelMapper): WeatherDataModel {
-        return mapper.map(main.temperature)
-    }
+    override fun map(mapper: ServerModelToDataModelMapper): DataModel =
+        mapper.map(main.temperature)
+
 }
 
 data class WeatherItem(

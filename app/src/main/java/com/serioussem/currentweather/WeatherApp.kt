@@ -1,7 +1,7 @@
 package com.serioussem.currentweather
 
 import android.app.Application
-import com.serioussem.currentweather.data.net.WeatherService
+import com.serioussem.currentweather.data.net.ApiService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,7 +27,7 @@ class WeatherApp : Application() {
             .client(okHttpClient)
             .build()
 
-        val service = retrofit.create(WeatherService::class.java)
+        val service = retrofit.create(ApiService::class.java)
 
     }
 }

@@ -2,14 +2,16 @@ package com.serioussem.currentweather.data
 
 interface WeatherRepository {
 
-    suspend fun fetchTemperature(city: String): DataModel
+    suspend fun fetchWeather(city: String): WeatherData
 
-    class Base(private val cacheDataSource: CacheDataSource) : WeatherRepository {
+    class Base(private val cloudCacheDataSource: CloudCacheDataSource,
+               private val cloudMapper: CloudMapper) : WeatherRepository {
 
-        override suspend fun fetchTemperature(city: String) = try {
-            DataModel.Success(cacheDataSource.fetchWeather(city = city))
+        override suspend fun fetchWeather(city: String) = try {
+            val temperature: Double= cloudCacheDataSource.fetchWeather(city = city)
+            WeatherData.Success(cloudMapper.map(city = city, temperature = temperature))
         } catch (e: Exception) {
-            DataModel.Failure(e)
+            WeatherData.Failure(e)
         }
     }
 }

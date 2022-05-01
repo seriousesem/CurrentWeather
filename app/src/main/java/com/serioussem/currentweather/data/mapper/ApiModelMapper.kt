@@ -1,12 +1,12 @@
-package com.serioussem.currentweather.data.net
+package com.serioussem.currentweather.data.mapper
 
 import com.serioussem.currentweather.core.Abstract
 
-interface ServerModelMapper: Abstract.Mapper{
+interface ApiModelMapper: Abstract.Mapper{
 
     fun map(temperature: Double): Double
 
-    class Base : ServerModelMapper{
+    class Base : ApiModelMapper {
         override fun map(temperature: Double) = temperature
     }
 

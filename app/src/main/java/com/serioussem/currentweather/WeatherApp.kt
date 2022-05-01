@@ -1,7 +1,8 @@
 package com.serioussem.currentweather
 
 import android.app.Application
-import com.serioussem.currentweather.data.net.ApiService
+import com.serioussem.currentweather.data.cache.CacheDataSource
+import com.serioussem.currentweather.data.api.ApiService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -12,6 +13,7 @@ class WeatherApp : Application() {
     private  companion object{
         const val BASE_URL = "http://api.openweathermap.org/data/2.5/weather?appid=df407ee3089050448a58024e26abac06&lang=uk&units=metric"
     }
+    lateinit var cacheDataSource: CacheDataSource
 
     override fun onCreate() {
         super.onCreate()
@@ -27,7 +29,9 @@ class WeatherApp : Application() {
             .client(okHttpClient)
             .build()
 
-        val service = retrofit.create(ApiService::class.java)
+        val apiService = retrofit.create(ApiService::class.java)
+
+        cacheDataSource = CacheDataSource.Base(context = this)
 
     }
 }

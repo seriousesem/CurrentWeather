@@ -1,7 +1,7 @@
 package com.serioussem.currentweather.domain
 
 import com.serioussem.currentweather.core.Abstract
-import com.serioussem.currentweather.data.WeatherModel
+import com.serioussem.currentweather.data.model.WeatherModel
 import com.serioussem.currentweather.presentation.WeatherUiModel
 
 sealed class WeatherDomain : Abstract.Object<WeatherUiModel, Abstract.Mapper.Empty>() {
@@ -12,7 +12,7 @@ sealed class WeatherDomain : Abstract.Object<WeatherUiModel, Abstract.Mapper.Emp
         }
     }
 
-    class Failure(private val errorType: Int): WeatherDomain() {
+    class Failure(private val failure: String): WeatherDomain() {
         override fun map(mapper: Abstract.Mapper.Empty): WeatherUiModel {
             TODO("Not yet implemented")
         }

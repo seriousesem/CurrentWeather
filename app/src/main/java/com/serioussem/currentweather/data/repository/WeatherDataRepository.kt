@@ -8,14 +8,14 @@ import com.serioussem.currentweather.data.mapper.ApiModelMapper
 import com.serioussem.currentweather.data.mapper.WeatherModelMapper
 import com.serioussem.currentweather.data.mapper.WeatherToDataBaseModelMapper
 import com.serioussem.currentweather.data.model.ApiModel
-import com.serioussem.currentweather.data.model.DataBaseModel
 import com.serioussem.currentweather.data.model.WeatherModel
+import com.serioussem.currentweather.domain.repository.WeatherDomainRepository
 
-interface WeatherRepository {
+interface WeatherDataRepository: WeatherDomainRepository {
 
-    suspend fun fetchWeather(city: String): WeatherData
+    override suspend fun fetchWeather(city: String): WeatherData
 
-    suspend fun saveWeather(weatherModel: WeatherModel)
+    override suspend fun saveWeather(weatherModel: WeatherModel)
 
     class Base(
         private val apiDataSource: ApiDataSource,
@@ -23,7 +23,7 @@ interface WeatherRepository {
         private val weatherModelMapper: WeatherModelMapper,
         private val apiModelMapper: ApiModelMapper,
         private val weatherToDataBaseModelMapper: WeatherToDataBaseModelMapper
-    ) : WeatherRepository {
+    ) : WeatherDataRepository {
 
         override suspend fun fetchWeather(city: String): WeatherData {
 
@@ -38,6 +38,7 @@ interface WeatherRepository {
                             temperature = (apiResponse.data as ApiModel).map(apiModelMapper)
                         )
                     )
+
                 }
                 is ApiResponseState.InternetFailure -> {
                     WeatherData.Success(weatherCache)

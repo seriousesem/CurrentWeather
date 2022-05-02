@@ -1,4 +1,4 @@
-package com.serioussem.currentweather.domain
+package com.serioussem.currentweather.domain.model
 
 import com.serioussem.currentweather.core.Abstract
 import com.serioussem.currentweather.data.model.WeatherModel

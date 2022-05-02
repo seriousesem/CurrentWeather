@@ -2,7 +2,7 @@ package com.serioussem.currentweather.data.mapper
 
 import com.serioussem.currentweather.core.Abstract
 import com.serioussem.currentweather.data.model.WeatherModel
-import com.serioussem.currentweather.domain.WeatherDomain
+import com.serioussem.currentweather.domain.model.WeatherDomain
 
 interface DataToDomainMapper : Abstract.Mapper {
 

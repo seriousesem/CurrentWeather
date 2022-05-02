@@ -11,5 +11,4 @@ interface WeatherModelMapper : Abstract.Mapper {
         override fun map(city: String, temperature: Double) =
             WeatherModel(city, temperature)
     }
-
 }

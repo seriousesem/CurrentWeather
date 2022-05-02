@@ -2,7 +2,9 @@ package com.serioussem.currentweather.data.cache
 
 import android.content.Context
 import androidx.room.Room
+import com.serioussem.currentweather.data.mapper.WeatherToDataBaseModelMapper
 import com.serioussem.currentweather.data.model.DataBaseModel
+import com.serioussem.currentweather.data.model.WeatherModel
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -36,7 +38,7 @@ interface CacheDataSource {
 
         override suspend fun saveWeather(dataBaseModel: DataBaseModel) {
              mutex.withLock {
-                 room.weatherDao().saveWeather(dataBaseModel)
+                 room.weatherDao().saveWeather(dataBaseModel = dataBaseModel)
              }
         }
     }

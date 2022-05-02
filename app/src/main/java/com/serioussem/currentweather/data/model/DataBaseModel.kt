@@ -15,5 +15,6 @@ data class DataBaseModel(
     private val temperature: Double
 ) : Abstract.Object<WeatherModel, WeatherModelMapper>() {
 
-    override fun map(mapper: WeatherModelMapper) = WeatherModel(city, temperature)
+    override fun map(mapper: WeatherModelMapper) =
+        WeatherModel(city = city, temperature = temperature)
 }

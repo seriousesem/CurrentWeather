@@ -1,10 +1,8 @@
-package com.serioussem.currentweather.data
+package com.serioussem.currentweather.data.mapper
 
 import com.serioussem.currentweather.core.Abstract
 import com.serioussem.currentweather.data.model.WeatherModel
 import com.serioussem.currentweather.domain.WeatherDomain
-import retrofit2.HttpException
-import java.net.UnknownHostException
 
 interface DataToDomainMapper : Abstract.Mapper {
 

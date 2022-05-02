@@ -1,22 +1,28 @@
 package com.serioussem.currentweather.data.repository
 
-import com.serioussem.currentweather.data.WeatherData
+import com.serioussem.currentweather.data.model.WeatherData
 import com.serioussem.currentweather.data.cache.CacheDataSource
 import com.serioussem.currentweather.data.api.ApiDataSource
 import com.serioussem.currentweather.data.api.ApiResponseState
 import com.serioussem.currentweather.data.mapper.ApiModelMapper
 import com.serioussem.currentweather.data.mapper.WeatherModelMapper
+import com.serioussem.currentweather.data.mapper.WeatherToDataBaseModelMapper
 import com.serioussem.currentweather.data.model.ApiModel
+import com.serioussem.currentweather.data.model.DataBaseModel
+import com.serioussem.currentweather.data.model.WeatherModel
 
 interface WeatherRepository {
 
     suspend fun fetchWeather(city: String): WeatherData
+
+    suspend fun saveWeather(weatherModel: WeatherModel)
 
     class Base(
         private val apiDataSource: ApiDataSource,
         private val cacheDataSource: CacheDataSource,
         private val weatherModelMapper: WeatherModelMapper,
         private val apiModelMapper: ApiModelMapper,
+        private val weatherToDataBaseModelMapper: WeatherToDataBaseModelMapper
     ) : WeatherRepository {
 
         override suspend fun fetchWeather(city: String): WeatherData {
@@ -43,6 +49,10 @@ interface WeatherRepository {
                     WeatherData.Failure(apiResponse.message)
                 }
             }
+        }
+
+        override suspend fun saveWeather(weatherModel: WeatherModel) {
+            cacheDataSource.saveWeather(weatherModel.map(weatherToDataBaseModelMapper))
         }
     }
 }

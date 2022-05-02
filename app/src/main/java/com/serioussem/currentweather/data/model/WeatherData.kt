@@ -1,7 +1,7 @@
-package com.serioussem.currentweather.data
+package com.serioussem.currentweather.data.model
 
 import com.serioussem.currentweather.core.Abstract
-import com.serioussem.currentweather.data.model.WeatherModel
+import com.serioussem.currentweather.data.mapper.DataToDomainMapper
 import com.serioussem.currentweather.domain.WeatherDomain
 
 sealed class WeatherData : Abstract.Object<WeatherDomain, DataToDomainMapper>() {

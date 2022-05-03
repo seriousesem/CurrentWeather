@@ -1,4 +1,4 @@
-package com.serioussem.currentweather.data.api
+package com.serioussem.currentweather.data.cloud
 
 import com.serioussem.currentweather.data.model.ApiModel
 import retrofit2.Response

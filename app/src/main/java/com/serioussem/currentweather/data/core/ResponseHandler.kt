@@ -1,7 +1,6 @@
 package com.serioussem.currentweather.data.core
 
 import com.serioussem.currentweather.R
-import com.serioussem.currentweather.core.ResourceProvider
 import retrofit2.Response
 
 interface ResponseHandler {

@@ -2,6 +2,7 @@ package com.serioussem.currentweather.data.di
 
 import android.content.Context
 import androidx.room.Room
+import com.serioussem.currentweather.data.core.ResourceProvider
 import com.serioussem.currentweather.data.cache.WeatherDao
 import com.serioussem.currentweather.data.cache.WeatherDataBase
 import dagger.Module

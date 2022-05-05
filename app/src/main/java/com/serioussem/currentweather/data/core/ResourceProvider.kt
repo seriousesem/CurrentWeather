@@ -1,4 +1,4 @@
-package com.serioussem.currentweather.core
+package com.serioussem.currentweather.data.core
 
 import android.content.Context
 import androidx.annotation.StringRes
@@ -9,7 +9,7 @@ interface ResourceProvider {
     fun string(@StringRes id:Int): String
     fun string(@StringRes id: Int, vararg args: Any): String
 
-    class Base @Inject constructor(private val context: Context): ResourceProvider{
+    class Base @Inject constructor(private val context: Context): ResourceProvider {
 
         override fun string(id: Int): String = context.getString(id)
 

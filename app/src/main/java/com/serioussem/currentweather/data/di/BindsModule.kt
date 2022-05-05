@@ -1,7 +1,7 @@
 package com.serioussem.currentweather.data.di
 
 
-import com.serioussem.currentweather.core.ResourceProvider
+import com.serioussem.currentweather.data.core.ResourceProvider
 import com.serioussem.currentweather.data.core.ResponseHandler
 import dagger.Binds
 import dagger.Module

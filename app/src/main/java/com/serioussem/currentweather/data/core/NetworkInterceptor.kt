@@ -4,9 +4,23 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import com.serioussem.currentweather.data.core.exception.NoInternetException
+import okhttp3.Interceptor
+import okhttp3.Response
 import javax.inject.Inject
 
-class NetworkInterceptor @Inject constructor(private val context: Context) {
+class NetworkInterceptor @Inject constructor(
+    private val context: Context,
+    private val noInternetException: NoInternetException
+) : Interceptor {
+
+    override fun intercept(chain: Interceptor.Chain): Response {
+        if (isConnected()) {
+            throw noInternetException
+        }
+        return chain.proceed(chain.request().newBuilder().build())
+    }
+
 
     fun isConnected(): Boolean {
 
@@ -35,4 +49,6 @@ class NetworkInterceptor @Inject constructor(private val context: Context) {
         }
         return result
     }
+
+
 }

@@ -16,8 +16,8 @@ class CloudDataSource @Inject constructor(
             val response = weatherApi.fetchWeather(city = city)
             val responseBody = response.body()
             if (response.isSuccessful && responseBody != null){
-                val temperature = responseBody.main.temperature
-                BaseResult.Success(WeatherModel(city = city, temperature = temperature))
+                val weather = WeatherModel(city = city, temperature = responseBody.main.temperature)
+                BaseResult.Success(weather)
             }else {
                 BaseResult.Error(Failure(response.code(), response.message()))
             }

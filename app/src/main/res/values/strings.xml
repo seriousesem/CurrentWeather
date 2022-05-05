@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">Temperature</string>
-    <string name="no_internet_connection_message">No internet connection</string>
-    <string name="server_not_response">Server is not responding</string>
+    <string name="no_internet_connection_message">Помилка підключення до інтернета</string>
+    <string name="server_not_response">Сервер не відповідає</string>
     <string name="other_error">other_error</string>
+    <string name="first_sity_name">Київ</string>
+    <string name="temperature">....°C</string>
+    <string name="weather_logo">Картинка погоди</string>
+    <string name="second_sity_name">Львів</string>
+    <string name="user_sity_name">Твоє місто</string>
+    <string name="enter_your_sity_name">Введіть назву свого міста</string>
+    <string name="add_your_sity_name">Добавити своє місто</string>
+    <string name="city_not_found">Місто не знайдено</string>
 
 </resources>

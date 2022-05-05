@@ -13,7 +13,7 @@ interface CacheDataSource {
 
     suspend fun saveWeather (dataBaseModel: DataBaseModel)
 
-    abstract class Abstract @Inject constructor(
+    abstract class Abstract (
         private val weatherDao: WeatherDao
     ) : CacheDataSource {
 
@@ -26,12 +26,12 @@ interface CacheDataSource {
                 weatherDao.fetchWeather(city = city)
             }
         }
-
-        override suspend fun saveWeather(dataBaseModel: DataBaseModel) {
-             mutex.withLock {
-                 weatherDao.saveWeather(dataBaseModel = dataBaseModel)
-             }
-        }
+//
+//        override suspend fun saveWeather(dataBaseModel: DataBaseModel) {
+//             mutex.withLock {
+//                 weatherDao.saveWeather(dataBaseModel = dataBaseModel)
+//             }
+//        }
     }
 }
 

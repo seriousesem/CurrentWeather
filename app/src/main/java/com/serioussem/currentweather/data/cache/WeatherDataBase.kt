@@ -6,7 +6,8 @@ import com.serioussem.currentweather.data.model.DataBaseModel
 
 @Database(
     entities = [DataBaseModel::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class WeatherDataBase : RoomDatabase() {
     abstract fun weatherDao(): WeatherDao

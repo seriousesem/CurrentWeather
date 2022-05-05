@@ -1,5 +1,7 @@
 package com.serioussem.currentweather.data.cloud
 
+import com.serioussem.currentweather.data.core.ResponseHandler
+import com.serioussem.currentweather.data.core.ResponseResult
 import javax.inject.Inject
 
 

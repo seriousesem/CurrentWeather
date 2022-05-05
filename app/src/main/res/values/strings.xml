@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Current Weather</string>
+    <string name="app_name">Temperature</string>
+    <string name="no_internet_connection_message">No internet connection</string>
+    <string name="server_not_response">Server is not responding</string>
+    <string name="other_error">other_error</string>
+
 </resources>

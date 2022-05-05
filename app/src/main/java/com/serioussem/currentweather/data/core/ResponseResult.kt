@@ -1,4 +1,6 @@
-package com.serioussem.currentweather.data.cloud
+package com.serioussem.currentweather.data.core
+
+import com.serioussem.currentweather.data.core.exception.AppException
 
 sealed class ResponseResult {
 

@@ -1,6 +1,9 @@
 package com.serioussem.currentweather.data.di
 
 import android.content.Context
+import com.serioussem.currentweather.core.Constants.TIMEOUT
+import com.serioussem.currentweather.core.Constants.TIMEUNIT
+import com.serioussem.currentweather.core.Constants.WEATHER_URL
 import com.serioussem.currentweather.data.cloud.WeatherApi
 import com.serioussem.currentweather.data.core.NetworkInterceptor
 import com.serioussem.currentweather.data.core.ResourceProvider
@@ -19,13 +22,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class ApiModule {
-    companion object {
-        private const val weatherUrl =
-            "http://api.openweathermap.org/data/2.5/weather?appid=df407ee3089050448a58024e26abac06&lang=uk&units=metric"
-        private const val timeout: Long = 30
-        private val timeUnit = TimeUnit.SECONDS
-    }
-
 
     @Provides
     @Singleton
@@ -66,15 +62,15 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideBaseUrl() = weatherUrl
+    fun provideBaseUrl() = WEATHER_URL
 
     @Provides
     @Singleton
-    fun provideTimeout() = timeout
+    fun provideTimeout() = TIMEOUT
 
     @Provides
     @Singleton
-    fun provideTimeUnit() = timeUnit
+    fun provideTimeUnit() = TIMEUNIT
 
     @Provides
     @Singleton

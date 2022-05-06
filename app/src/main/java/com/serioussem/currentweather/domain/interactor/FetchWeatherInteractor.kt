@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class FetchWeatherInteractor @Inject constructor(private val weatherRepository: WeatherRepository) {
-    suspend fun execute(city: String): Flow<BaseResult<WeatherModel, Failure>> =
+    suspend fun fetchWeather(city: String): Flow<BaseResult<WeatherModel, Failure>> =
         weatherRepository.fetchWeather(city = city)
 }

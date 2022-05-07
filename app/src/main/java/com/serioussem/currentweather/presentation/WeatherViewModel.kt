@@ -42,58 +42,35 @@ class WeatherViewModel @Inject constructor(
     }
 
     fun fetchWeather() {
-
-        val firstCity = FIRST_CITY
-        val secondCity = SECOND_CITY
-
+        val defaultCityList: List<String> = listOf(FIRST_CITY, SECOND_CITY)
         viewModelScope.launch {
-            launch {
-                fetchWeatherInteractor.fetchWeather(firstCity)
-                    .onStart { showLoading() }
-                    .catch { e ->
-                        hideLoading()
-                        showSnackbar(e.message.toString())
-                    }
-                    .collect { result ->
-                        hideLoading()
-                        when (result) {
-                            is BaseResult.Success<*> -> {
-                                _secondCityWeather.value = result.data as WeatherModel
-                            }
-                            is BaseResult.Error -> {
-                                if (result.error.code != 0) {
-                                    showSnackbar(result.error.message)
+            defaultCityList.forEach { city ->
+                launch {
+                    fetchWeatherInteractor.fetchWeather(city)
+                        .onStart { showLoading() }
+                        .catch { e ->
+                            hideLoading()
+                            showSnackbar(e.message.toString())
+                        }
+                        .collect { result ->
+                            hideLoading()
+                            when (result) {
+                                is BaseResult.Success<*> -> {
+                                    _secondCityWeather.value = result.data as WeatherModel
+                                }
+                                is BaseResult.Error -> {
+                                    if (result.error.code != 0) {
+                                        showSnackbar(result.error.message)
+                                    }
                                 }
                             }
                         }
-                    }
-            }
-            launch {
-                fetchWeatherInteractor.fetchWeather(secondCity)
-                    .onStart { showLoading() }
-                    .catch { e ->
-                        hideLoading()
-                        showSnackbar(e.message.toString())
-                    }
-                    .collect { result ->
-                        hideLoading()
-                        when (result) {
-                            is BaseResult.Success<*> -> {
-                                _secondCityWeather.value = result.data as WeatherModel
-                            }
-                            is BaseResult.Error -> {
-                                if (result.error.code != 0) {
-                                    showSnackbar(result.error.message)
-                                }
-                            }
-                        }
-                    }
+                }
             }
         }
     }
 
     sealed class WeatherActivityState {
-
         object Init : WeatherActivityState()
         data class Loading(val isLoading: Boolean) : WeatherActivityState()
         data class ShowSnackbar(val message: String) : WeatherActivityState()

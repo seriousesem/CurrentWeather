@@ -72,21 +72,20 @@ class WeatherActivity : AppCompatActivity() {
     private fun observeWeather() {
         viewModel.apply {
             firstCityWeather.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .onEach { handleWeather(it) }
+                .onEach { updateView(it) }
                 .launchIn(lifecycleScope)
             secondCityWeather.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .onEach { handleWeather(it) }
+                .onEach { updateView(it) }
                 .launchIn(lifecycleScope)
         }
 
     }
 
-    private fun handleWeather(weather: WeatherModel) {
+    private fun updateView(weather: WeatherModel) {
         binding.apply {
             val city = weather.city
             val temperature = weather.temperature.toString()
             when (city) {
-
                 FIRST_CITY -> {
                     firstCityName.text = city
                     textFirstCityTemperature.text = temperature

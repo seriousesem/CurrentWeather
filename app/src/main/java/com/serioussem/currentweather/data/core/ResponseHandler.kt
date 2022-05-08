@@ -23,10 +23,10 @@ interface ResponseHandler {
                         return ResponseResult.Success(data = body)
                     }
                     return ResponseResult.Failure(
-                        message = resourceProvider.string(R.string.server_not_response))
+                        message = resourceProvider.string(R.string.city_not_found))
                 } catch (failure: Exception) {
                     return ResponseResult.Failure(
-                        message = resourceProvider.string(R.string.other_error))
+                        message = resourceProvider.string(R.string.server_not_response))
                 }
 
             } else {

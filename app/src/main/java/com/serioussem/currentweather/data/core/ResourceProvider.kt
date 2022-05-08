@@ -4,15 +4,11 @@ import android.content.Context
 import androidx.annotation.StringRes
 import javax.inject.Inject
 
-interface ResourceProvider {
+class ResourceProvider@Inject constructor(private val context: Context) {
 
-    fun string(@StringRes id:Int): String
-    fun string(@StringRes id: Int, vararg args: Any): String
 
-    class Base @Inject constructor(private val context: Context): ResourceProvider {
+        fun string(@StringRes id: Int): String = context.getString(id)
 
-        override fun string(id: Int): String = context.getString(id)
+        fun string(@StringRes id: Int, vararg args: Any): String = context.getString(id, args)
 
-        override fun string(id: Int, vararg args: Any): String = context.getString(id, args)
-    }
 }

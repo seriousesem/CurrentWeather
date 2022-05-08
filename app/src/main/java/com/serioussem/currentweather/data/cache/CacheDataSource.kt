@@ -1,38 +1,36 @@
 package com.serioussem.currentweather.data.cache
 
 
-import com.serioussem.currentweather.data.model.DataBaseModel
+import com.serioussem.currentweather.domain.model.WeatherModel
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 
-interface CacheDataSource {
+class CacheDataSource @Inject constructor(private val weatherDao: WeatherDao) {
 
-    suspend fun fetchWeather(city: String): DataBaseModel
+    companion object {
+        private val mutex = Mutex()
+    }
 
-    suspend fun saveWeather (dataBaseModel: DataBaseModel)
-
-    abstract class Abstract (
-        private val weatherDao: WeatherDao
-    ) : CacheDataSource {
-
-        companion object {
-            private val mutex = Mutex()
+    suspend fun fetchWeather(city: String): WeatherModel {
+        return mutex.withLock {
+            weatherDao.fetchWeather(city = city)
         }
+    }
 
-        override suspend fun fetchWeather(city: String): DataBaseModel {
-            return mutex.withLock {
-                weatherDao.fetchWeather(city = city)
-            }
+    suspend fun fetchCityList():MutableList<String>{
+        return mutex.withLock {
+            weatherDao.fetchCityList()
         }
-//
-//        override suspend fun saveWeather(dataBaseModel: DataBaseModel) {
-//             mutex.withLock {
-//                 weatherDao.saveWeather(dataBaseModel = dataBaseModel)
-//             }
-//        }
+    }
+
+    suspend fun saveWeather(weather: WeatherModel) {
+        mutex.withLock {
+            weatherDao.saveWeather(weather = weather)
+        }
     }
 }
+
 
 

@@ -1,11 +1,16 @@
 package com.serioussem.currentweather.presentation
 
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.serioussem.currentweather.core.Constants.FIRST_CITY
 import com.serioussem.currentweather.core.Constants.SECOND_CITY
 import com.serioussem.currentweather.domain.core.BaseResult
+import com.serioussem.currentweather.domain.interactor.FetchUserCityInteractor
 import com.serioussem.currentweather.domain.interactor.FetchWeatherInteractor
+import com.serioussem.currentweather.domain.interactor.UpdateUserCityInteractor
 import com.serioussem.currentweather.domain.model.WeatherModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -14,19 +19,28 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
-    private val fetchWeatherInteractor: FetchWeatherInteractor
+    private val fetchWeatherInteractor: FetchWeatherInteractor,
+    private val fetchUserCityInteractor: FetchUserCityInteractor,
+    private val updateUserCityInteractor: UpdateUserCityInteractor
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<WeatherActivityState>(WeatherActivityState.Init)
-    val state: StateFlow<WeatherActivityState> = _state
+    private val userCity = fetchUserCityInteractor.fetchUserCity()
+    private val cityList: MutableList<String> = mutableListOf(FIRST_CITY, SECOND_CITY)
 
-    private val _firstCityWeather = MutableStateFlow(WeatherModel())
-    val firstCityWeather: Flow<WeatherModel> = _firstCityWeather
-    private val _secondCityWeather = MutableStateFlow(WeatherModel())
-    val secondCityWeather: Flow<WeatherModel> = _secondCityWeather
+    private val _state = MutableLiveData<WeatherActivityState>(WeatherActivityState.Init)
+    val state: LiveData<WeatherActivityState> = _state
+
+    private var _defaultCitiesWeather = MutableLiveData<MutableList<WeatherModel>>(mutableListOf())
+    val defaultCitiesWeather: LiveData<MutableList<WeatherModel>> = _defaultCitiesWeather
+
 
     init {
-        fetchWeather()
+        fetchDefaultCitiesWeather()
+    }
+
+    fun updateUserCity(city: String){
+        updateUserCityInteractor.updateUserCity(city = city)
+        if(cityList.size <= 2) cityList.add(userCity) else cityList[2] = userCity
     }
 
     private fun showLoading() {
@@ -41,10 +55,10 @@ class WeatherViewModel @Inject constructor(
         _state.value = WeatherActivityState.ShowSnackbar(message)
     }
 
-    fun fetchWeather() {
-        val defaultCityList: List<String> = listOf(FIRST_CITY, SECOND_CITY)
+    fun fetchDefaultCitiesWeather() {
+
         viewModelScope.launch {
-            defaultCityList.forEach { city ->
+            cityList.forEach { city ->
                 launch {
                     fetchWeatherInteractor.fetchWeather(city)
                         .onStart { showLoading() }
@@ -56,12 +70,11 @@ class WeatherViewModel @Inject constructor(
                             hideLoading()
                             when (result) {
                                 is BaseResult.Success<*> -> {
-                                    _secondCityWeather.value = result.data as WeatherModel
+                                    _defaultCitiesWeather.value =
+                                        mutableListOf(result.data as WeatherModel)
                                 }
                                 is BaseResult.Error -> {
-                                    if (result.error.code != 0) {
-                                        showSnackbar(result.error.message)
-                                    }
+                                    showSnackbar(result.error.message)
                                 }
                             }
                         }

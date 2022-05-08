@@ -15,6 +15,4 @@ abstract class BindsModule {
     @Binds
     abstract fun bindResponseHandler(responseHandler: ResponseHandler.Base): ResponseHandler
 
-    @Binds
-    abstract fun bindResourceProvider( resourceProvider: ResourceProvider.Base): ResourceProvider
 }

@@ -45,13 +45,7 @@ data class ApiModel(
 
     @field:SerializedName("wind")
     val wind: Wind? = null
-) : Abstract.Object<Double, ApiModelMapper>() {
-
-    override fun map(mapper: ApiModelMapper): Double =
-        mapper.map(main.temperature)
-
-}
-
+)
 data class WeatherItem(
 
     @field:SerializedName("icon")

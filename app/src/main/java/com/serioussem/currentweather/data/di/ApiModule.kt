@@ -1,13 +1,9 @@
 package com.serioussem.currentweather.data.di
 
 import android.content.Context
-import com.serioussem.currentweather.core.Constants.TIMEOUT
-import com.serioussem.currentweather.core.Constants.TIMEUNIT
 import com.serioussem.currentweather.core.Constants.WEATHER_URL
 import com.serioussem.currentweather.data.cloud.WeatherApi
 import com.serioussem.currentweather.data.core.NetworkInterceptor
-import com.serioussem.currentweather.data.core.ResourceProvider
-import com.serioussem.currentweather.data.core.exception.NoInternetException
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +13,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -25,52 +22,35 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(baseUrl: String, okHttpClient: OkHttpClient): Retrofit =
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder().apply {
-            baseUrl(baseUrl)
+            baseUrl(WEATHER_URL)
             addConverterFactory(GsonConverterFactory.create())
             client(okHttpClient)
         }.build()
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(
-        networkInterceptor: NetworkInterceptor,
-        timeout: Long,
-        timeUnit: TimeUnit
-    ): OkHttpClient = OkHttpClient.Builder().apply {
-        connectTimeout(timeout, timeUnit)
-        readTimeout(timeout, timeUnit)
-        addInterceptor(networkInterceptor)
+    fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder().apply {
+        connectTimeout(30, TimeUnit.SECONDS)
+        readTimeout(30, TimeUnit.SECONDS)
+
     }.build()
 
     @Provides
     @Singleton
     fun provideNetworkInterceptor(
-        @ApplicationContext context: Context,
-        noInternetException: NoInternetException
+        @ApplicationContext context: Context
     ): NetworkInterceptor =
-        NetworkInterceptor(context = context, noInternetException = noInternetException)
-
-    @Provides
-    @Singleton
-    fun provideNoInternetException(resourceProvider: ResourceProvider): NoInternetException = NoInternetException(resourceProvider)
+        NetworkInterceptor(context = context)
 
     @Provides
     @Singleton
     fun provideContext(@ApplicationContext context: Context): Context = context
 
-    @Provides
-    @Singleton
-    fun provideBaseUrl() = WEATHER_URL
-
-    @Provides
-    @Singleton
-    fun provideTimeout() = TIMEOUT
-
-    @Provides
-    @Singleton
-    fun provideTimeUnit() = TIMEUNIT
+//    @Provides
+//
+//    fun provideBaseUrl() = WEATHER_URL
 
     @Provides
     @Singleton

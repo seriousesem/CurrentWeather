@@ -1,16 +1,7 @@
 package com.serioussem.currentweather
 
 import android.app.Application
-import com.serioussem.currentweather.data.cache.CacheDataSource
+import dagger.hilt.android.HiltAndroidApp
 
-class WeatherApp : Application() {
-
-    lateinit var cacheDataSource: CacheDataSource
-
-    override fun onCreate() {
-        super.onCreate()
-
-        cacheDataSource = CacheDataSource.Base(context = this)
-
-    }
-}
+@HiltAndroidApp
+class WeatherApp : Application()

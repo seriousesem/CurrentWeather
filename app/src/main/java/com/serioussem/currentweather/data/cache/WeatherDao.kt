@@ -1,6 +1,7 @@
 package com.serioussem.currentweather.data.cache
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
@@ -18,5 +19,8 @@ interface WeatherDao {
 
     @Query("SELECT city  FROM weather")
     suspend fun fetchCityList(): MutableList<String>
+
+    @Query("DELETE FROM weather")
+    suspend fun clearTable()
 
 }

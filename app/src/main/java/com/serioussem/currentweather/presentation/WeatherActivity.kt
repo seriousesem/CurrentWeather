@@ -2,14 +2,9 @@ package com.serioussem.currentweather.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils
 import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.serioussem.currentweather.R
 import com.serioussem.currentweather.core.Constants.FIRST_CITY
-import com.serioussem.currentweather.core.Constants.KEY_USER_CITY
 import com.serioussem.currentweather.core.Constants.SECOND_CITY
 import com.serioussem.currentweather.core.hideView
 import com.serioussem.currentweather.core.showView
@@ -19,9 +14,6 @@ import com.serioussem.currentweather.databinding.ActivityWeatherBinding
 import com.serioussem.currentweather.domain.model.WeatherModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.serioussem.currentweather.presentation.WeatherViewModel.WeatherActivityState
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class WeatherActivity : AppCompatActivity() {
@@ -49,7 +41,7 @@ class WeatherActivity : AppCompatActivity() {
                 val userCity = editUserCity.text.toString()
                 if (userCity.isNotEmpty()) {
                     viewModel.apply {
-                        updateUserCity(userCity)
+                        editUserCity(userCity)
                         fetchDefaultCitiesWeather()
                     }
                     cleanEdit()

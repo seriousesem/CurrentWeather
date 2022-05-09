@@ -28,10 +28,9 @@ class WeatherRepositoryImpl @Inject constructor(
             val cacheResult = cacheDataSource.fetchWeather(city = city)
 
             if(cloudResult is BaseResult.Success){
-                cacheDataSource.saveWeather(cloudResult.data)
                 emit(cloudResult)
+                cacheDataSource.saveWeather(cloudResult.data)
             }else {
-
                 emit(BaseResult.Success(cacheResult))
                 emit(BaseResult.Error(Failure(3, resourceProvider.string(R.string.failed_to_load_data))))
             }
@@ -42,4 +41,7 @@ class WeatherRepositoryImpl @Inject constructor(
     override fun fetchUserCity(): String = storage.fetchUserCity()
 
     override fun updateUserCity(city: String) = storage.updateUserCity(city = city)
+
+    override suspend fun fetchCityList(): MutableList<String> = cacheDataSource.fetchCityList()
+
 }

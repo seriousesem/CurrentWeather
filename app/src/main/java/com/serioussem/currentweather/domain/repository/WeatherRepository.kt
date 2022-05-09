@@ -15,4 +15,6 @@ interface WeatherRepository{
 
     fun updateUserCity(city: String)
 
+    suspend fun fetchCityList(): MutableList<String>
+
 }

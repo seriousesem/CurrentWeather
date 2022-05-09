@@ -31,7 +31,7 @@ class CloudDataSource @Inject constructor(
                     BaseResult.Error(Failure(1, resourceProvider.string(R.string.city_not_found)))
                 }
             } catch (e: Exception) {
-                BaseResult.Error(Failure(2, e.message.toString()))
+                BaseResult.Error(Failure(3, resourceProvider.string(R.string.failed_to_load_data)))
 
             }
         } else {

@@ -1,7 +1,6 @@
 package com.serioussem.currentweather.data.repository
 
 
-
 import com.serioussem.currentweather.R
 import com.serioussem.currentweather.data.cache.CacheDataSource
 import com.serioussem.currentweather.data.cloud.CloudDataSource
@@ -20,21 +19,20 @@ class WeatherRepositoryImpl @Inject constructor(
     private val cacheDataSource: CacheDataSource,
     private val storage: SharedPrefsCityStorage,
     private val resourceProvider: ResourceProvider
-): WeatherRepository {
+) : WeatherRepository {
 
-    override suspend fun fetchWeather(city: String): Flow<BaseResult<WeatherModel, Failure>> {
-        return flow {
-            val cloudResult = cloudDataSource.fetchWeather(city = city)
-            val cacheResult = cacheDataSource.fetchWeather(city = city)
+    override suspend fun fetchWeather(city: String): BaseResult<WeatherModel, Failure> {
 
-            if(cloudResult is BaseResult.Success){
-                emit(cloudResult)
-                cacheDataSource.saveWeather(cloudResult.data)
-            }else {
-                emit(BaseResult.Success(cacheResult))
-                emit(BaseResult.Error(Failure(3, resourceProvider.string(R.string.failed_to_load_data))))
-            }
+        val cloudResult = cloudDataSource.fetchWeather(city = city)
+        val cacheResult = cacheDataSource.fetchWeather(city = city)
 
+        return if (cloudResult is BaseResult.Success) {
+            cacheDataSource.saveWeather(cloudResult.data)
+            cloudResult
+
+        } else {
+            BaseResult.Error(Failure(3, resourceProvider.string(R.string.failed_to_load_data)))
+            BaseResult.Success(cacheResult)
         }
     }
 

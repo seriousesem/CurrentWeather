@@ -9,7 +9,7 @@ import  kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository{
 
-    suspend fun fetchWeather(city: String): Flow<BaseResult<WeatherModel, Failure>>
+    suspend fun fetchWeather(city: String): BaseResult<WeatherModel, Failure>
 
     fun fetchUserCity(): String
 

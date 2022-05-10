@@ -42,7 +42,7 @@ class WeatherActivity : AppCompatActivity() {
                 if (userCity.isNotEmpty()) {
                     viewModel.apply {
                         editUserCity(userCity)
-                        fetchDefaultCitiesWeather()
+                        fetchCitiesWeather()
                     }
                     cleanEdit()
                 } else snackbar(resourceProvider.string(R.string.enter_your_sity_name))
@@ -88,7 +88,7 @@ class WeatherActivity : AppCompatActivity() {
 
     private fun observeWeather() {
         viewModel.apply {
-            defaultCitiesWeather.observe(this@WeatherActivity) {
+            citiesWeather.observe(this@WeatherActivity) {
                 updateView(it)
             }
         }
@@ -129,7 +129,7 @@ class WeatherActivity : AppCompatActivity() {
     private fun swipeRefresh() {
         binding.swipeRefreshContainer.setOnRefreshListener {
             viewModel.apply {
-                fetchDefaultCitiesWeather()
+                fetchCitiesWeather()
             }
             binding.swipeRefreshContainer.isRefreshing = false
         }

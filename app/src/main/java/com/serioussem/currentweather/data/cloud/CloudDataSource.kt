@@ -1,46 +1,36 @@
 package com.serioussem.currentweather.data.cloud
 
 
-
 import com.serioussem.currentweather.R
-import com.serioussem.currentweather.data.core.NetworkInterceptor
 import com.serioussem.currentweather.data.core.ResourceProvider
-import com.serioussem.currentweather.domain.core.BaseResult
-import com.serioussem.currentweather.domain.core.Failure
+import com.serioussem.currentweather.domain.core.ResultState
 import com.serioussem.currentweather.domain.model.WeatherModel
 import javax.inject.Inject
 
 
 class CloudDataSource @Inject constructor(
     private val weatherApi: WeatherApi,
-    private val networkInterceptor: NetworkInterceptor,
     private val resourceProvider: ResourceProvider
 ) {
 
-    suspend fun fetchWeather(city: String): BaseResult<WeatherModel, Failure> {
-        return if (networkInterceptor.isConnected()) {
-            try {
-                val response = weatherApi.fetchWeather(city = city)
-                val responseBody = response.body()
+    suspend fun fetchWeather(city: String): ResultState<WeatherModel> {
 
-                if (response.isSuccessful && responseBody != null) {
-                    val weather =
-                        WeatherModel(city = city, temperature = responseBody.main.temperature)
-                    BaseResult.Success(weather)
-                } else {
-                    BaseResult.Error(Failure(1, resourceProvider.string(R.string.city_not_found)))
-                }
-            } catch (e: Exception) {
-                BaseResult.Error(Failure(2, resourceProvider.string(R.string.failed_to_load_data)))
+        return try {
+            val response = weatherApi.fetchWeather(city = city)
+            val responseBody = response.body()
 
-            }
-        } else {
-            BaseResult.Error(
-                Failure(
-                    0,
-                    resourceProvider.string(R.string.no_internet_connection_message)
+            if (response.isSuccessful && responseBody != null) {
+                ResultState.Success(
+                    WeatherModel(
+                        city = city,
+                        temperature = responseBody.main.temperature
+                    )
                 )
-            )
+            } else {
+                ResultState.Error(resourceProvider.string(R.string.city_not_found))
+            }
+        } catch (e: Exception) {
+            ResultState.Error(resourceProvider.string(R.string.failed_to_load_data))
         }
     }
 }

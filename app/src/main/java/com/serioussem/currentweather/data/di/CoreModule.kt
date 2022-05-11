@@ -31,10 +31,9 @@ class CoreModule {
     @Singleton
     fun provideCloudDataSource(
         weatherApi: WeatherApi,
-        networkInterceptor: NetworkInterceptor,
         resourceProvider: ResourceProvider
     ): CloudDataSource =
-        CloudDataSource(weatherApi, networkInterceptor, resourceProvider)
+        CloudDataSource(weatherApi, resourceProvider)
 
     @Provides
     @Singleton
@@ -47,12 +46,14 @@ class CoreModule {
         cloudDataSource: CloudDataSource,
         cacheDataSource: CacheDataSource,
         storage: SharedPrefsCityStorage,
+        networkInterceptor: NetworkInterceptor,
         resourceProvider: ResourceProvider
     ): WeatherRepository =
         WeatherRepositoryImpl(
             cloudDataSource = cloudDataSource,
             cacheDataSource = cacheDataSource,
             storage = storage,
+            networkInterceptor = networkInterceptor,
             resourceProvider = resourceProvider
         )
 

@@ -8,14 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.serioussem.currentweather.core.Constants.FIRST_CITY
 import com.serioussem.currentweather.core.Constants.SECOND_CITY
-import com.serioussem.currentweather.domain.core.BaseResult
+import com.serioussem.currentweather.domain.core.ResultState
 import com.serioussem.currentweather.domain.interactor.FetchCityListInteractor
 import com.serioussem.currentweather.domain.interactor.FetchUserCityInteractor
 import com.serioussem.currentweather.domain.interactor.FetchWeatherInteractor
 import com.serioussem.currentweather.domain.interactor.UpdateUserCityInteractor
 import com.serioussem.currentweather.domain.model.WeatherModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,8 +31,9 @@ class WeatherViewModel @Inject constructor(
     private var cacheList: MutableList<String> = mutableListOf()
 
 
-    private var _citiesWeather = MutableLiveData<WeatherActivityState>(WeatherActivityState.Init)
-    val citiesWeather: LiveData<WeatherActivityState> = _citiesWeather
+    private var _citiesWeather =
+        MutableLiveData<ResultState<MutableList<WeatherModel>>>(ResultState.Init())
+    val citiesWeather: LiveData<ResultState<MutableList<WeatherModel>>> = _citiesWeather
 
 
     init {
@@ -48,54 +48,37 @@ class WeatherViewModel @Inject constructor(
     private fun updateUserCity(city: String) =
         updateUserCityInteractor.updateUserCity(city = city)
 
-    private fun updateSityList(city: String) {
-        if (cityList.size <= 2) cityList.add(city) else cityList[2] = city
-    }
-
-
-    private suspend fun updateCityList() {
+    private suspend fun updateCityList(city: String) {
         cacheList.clear()
         cacheList.addAll(fetchCityListInteractor.fetchCityList())
+        if (cityList.size <= 3) cityList.add(city) else cityList[2] = city
         cityList.add(userCity)
         Log.d("Sem", "cacheList: $cacheList")
+        Log.d("Sem", "cityList: $cityList")
     }
 
     fun fetchCitiesWeather() {
-        _citiesWeather.value = WeatherActivityState.Loading
+        _citiesWeather.value = ResultState.Loading()
         viewModelScope.launch {
-            updateCityList()
             cityList.forEach { city ->
                 launch {
-                    when (val result = fetchWeatherInteractor.fetchWeather(city)) {
-                        is BaseResult.Success<*> -> {
-                            _citiesWeather.value =
-                                WeatherActivityState.Success(result.data)
-                            when (city) {
-                                FIRST_CITY -> {}
-                                SECOND_CITY -> {}
-                                city -> {
-                                    updateUserCity(city = city)
-                                    updateSityList(city = city)
-                                }
+                    val result = fetchWeatherInteractor.fetchWeather(city)
+                    if (result is ResultState.Success) {
+                        _citiesWeather.value =
+                            ResultState.Success(data = mutableListOf(result.data as WeatherModel))
+                        updateUserCity(city = city)
+                        when (city) {
+                            FIRST_CITY -> {}
+                            SECOND_CITY -> {}
+                            city -> {
+                                updateCityList(city = city)
                             }
                         }
-                        is BaseResult.Error -> {
-                            _citiesWeather.value = WeatherActivityState.Error(result.error.message)
-                        }
+                    } else {
+                        _citiesWeather.value = ResultState.Error(result.message.toString())
                     }
                 }
             }
         }
-
     }
-
-    sealed class WeatherActivityState {
-        object Init : WeatherActivityState()
-        object Loading : WeatherActivityState()
-        data class Success<T>(val data: T): WeatherActivityState()
-        data class Error(val message: String) : WeatherActivityState()
-    }
-
 }
-
-

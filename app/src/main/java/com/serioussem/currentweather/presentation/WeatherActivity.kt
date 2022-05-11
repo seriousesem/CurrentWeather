@@ -1,7 +1,9 @@
 package com.serioussem.currentweather.presentation
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.viewModels
 import com.serioussem.currentweather.R
 import com.serioussem.currentweather.core.Constants.FIRST_CITY
@@ -11,9 +13,9 @@ import com.serioussem.currentweather.core.showView
 import com.serioussem.currentweather.core.snackbar
 import com.serioussem.currentweather.data.core.ResourceProvider
 import com.serioussem.currentweather.databinding.ActivityWeatherBinding
+import com.serioussem.currentweather.domain.core.ResultState
 import com.serioussem.currentweather.domain.model.WeatherModel
 import dagger.hilt.android.AndroidEntryPoint
-import com.serioussem.currentweather.presentation.WeatherViewModel.WeatherActivityState
 
 @AndroidEntryPoint
 class WeatherActivity : AppCompatActivity() {
@@ -55,21 +57,6 @@ class WeatherActivity : AppCompatActivity() {
 
     }
 
-    private fun handleActivityState(state: WeatherActivityState) {
-        when (state) {
-            is WeatherActivityState.ShowSnackbar -> snackbar(state.message)
-            is WeatherActivityState.Loading -> handleLoading(state.isLoading)
-            is WeatherActivityState.Init -> showProgressbar()
-        }
-    }
-
-    private fun handleLoading(isLoading: Boolean) {
-        if (isLoading) {
-            showProgressbar()
-        } else {
-            showContent()
-        }
-    }
 
     private fun showContent() {
         hideView(binding.progressBar)
@@ -82,37 +69,22 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        observeActivityState()
-        observeWeather()
-    }
-
-    private fun observeWeather() {
         viewModel.apply {
             citiesWeather.observe(this@WeatherActivity) {
-                updateView(it)
-            }
-        }
-    }
-
-
-    private fun updateView(citiesWeather: List<WeatherModel>) {
-        binding.apply {
-            citiesWeather.forEach {
-                val city = it.city
-                val temperature = it.temperature.toString()
-
-                when (city) {
-                    FIRST_CITY -> {
-                        firstCityName.text = city
-                        textFirstCityTemperature.text = temperature
+                when (it) {
+                    is ResultState.Init -> {
+                        showProgressbar()
                     }
-                    SECOND_CITY -> {
-                        secondCityName.text = city
-                        textSecondCityTemperature.text = temperature
+                    is ResultState.Loading -> {
+                        showProgressbar()
                     }
-                    city -> {
-                        textUserCity.text = city
-                        textUserCityTemperature.text = temperature
+                    is ResultState.Success<*> -> {
+                        showContent()
+                        it.data?.let { data -> updateView(data) }
+                    }
+                    is ResultState.Error -> {
+                        showContent()
+                        it.message?.let { message -> snackbar(message) }
                     }
                 }
             }
@@ -120,9 +92,26 @@ class WeatherActivity : AppCompatActivity() {
 
     }
 
-    private fun observeActivityState() {
-        viewModel.state.observe(this@WeatherActivity) {
-            handleActivityState(it)
+    private fun updateView(weatherList: MutableList<WeatherModel>) {
+        binding.apply {
+            weatherList.forEach { weather ->
+                val city = weather.city
+                val temperature = weather.temperature
+                when (city) {
+                    FIRST_CITY -> {
+                        firstCityName.text = city
+                        textFirstCityTemperature.text = updateTextView(temperature = temperature)
+                    }
+                    SECOND_CITY -> {
+                        secondCityName.text = city
+                        textSecondCityTemperature.text = updateTextView(temperature = temperature)
+                    }
+                    city -> {
+                        textUserCity.text = city
+                        textUserCityTemperature.text = updateTextView(temperature = temperature)
+                    }
+                }
+            }
         }
     }
 
@@ -138,4 +127,8 @@ class WeatherActivity : AppCompatActivity() {
     private fun cleanEdit() {
         binding.editUserCity.text.clear()
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateTextView(temperature: Double): String = "$temperature °C"
+
 }

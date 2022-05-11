@@ -12,7 +12,6 @@ import com.serioussem.currentweather.domain.core.ResultState
 import com.serioussem.currentweather.domain.interactor.FetchCityListInteractor
 import com.serioussem.currentweather.domain.interactor.FetchUserCityInteractor
 import com.serioussem.currentweather.domain.interactor.FetchWeatherInteractor
-import com.serioussem.currentweather.domain.interactor.UpdateUserCityInteractor
 import com.serioussem.currentweather.domain.model.WeatherModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,14 +20,14 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
     private val fetchWeatherInteractor: FetchWeatherInteractor,
-    private val updateUserCityInteractor: UpdateUserCityInteractor,
+//    private val updateUserCityInteractor: UpdateUserCityInteractor,
     private val fetchUserCityInteractor: FetchUserCityInteractor,
     private val fetchCityListInteractor: FetchCityListInteractor
 ) : ViewModel() {
 
     private val userCity = fetchUserCityInteractor.fetchUserCity()
-    private var cityList: MutableList<String> = mutableListOf(FIRST_CITY, SECOND_CITY)
-    private var cacheList: MutableList<String> = mutableListOf()
+    private var cityList: MutableList<String> = mutableListOf(FIRST_CITY, SECOND_CITY, userCity)
+
 
 
     private var _citiesWeather =
@@ -37,28 +36,30 @@ class WeatherViewModel @Inject constructor(
 
 
     init {
+//        updateCityList()
         fetchCitiesWeather()
     }
 
     fun editUserCity(city: String) {
 
-        if (cityList.size <= 3) cityList.add(city) else cityList[2] = city
+        if (cityList.size <= 2) cityList.add(city) else cityList[2] = city
     }
 
-    private fun updateUserCity(city: String) =
-        updateUserCityInteractor.updateUserCity(city = city)
+//    private fun updateUserCity(city: String) =
+//        updateUserCityInteractor.updateUserCity(city = city)
 
-    private suspend fun updateCityList(city: String) {
-        cacheList.clear()
-        cacheList.addAll(fetchCityListInteractor.fetchCityList())
-        if (cityList.size <= 3) cityList.add(city) else cityList[2] = city
-        cityList.add(userCity)
-        Log.d("Sem", "cacheList: $cacheList")
-        Log.d("Sem", "cityList: $cityList")
-    }
+//    private fun updateCityList() {
+//        cacheList.clear()
+//        cacheList.addAll(fetchCityListInteractor.fetchCityList())
+////        if (cityList.size <= 2) cityList.add(city) else cityList[2] = city
+////        cityList.add(userCity)
+//        Log.d("Sem", "cacheList: $cacheList")
+////        Log.d("Sem", "cityList: $cityList")
+//    }
 
     fun fetchCitiesWeather() {
         _citiesWeather.value = ResultState.Loading()
+//        updateCityList()
         viewModelScope.launch {
             cityList.forEach { city ->
                 launch {
@@ -66,16 +67,19 @@ class WeatherViewModel @Inject constructor(
                     if (result is ResultState.Success) {
                         _citiesWeather.value =
                             ResultState.Success(data = mutableListOf(result.data as WeatherModel))
-                        updateUserCity(city = city)
-                        when (city) {
-                            FIRST_CITY -> {}
-                            SECOND_CITY -> {}
-                            city -> {
-                                updateCityList(city = city)
-                            }
-                        }
+//                        updateUserCity(city = city)
+//                        when (city) {
+//                            FIRST_CITY -> {}
+//                            SECOND_CITY -> {}
+//                            city -> {
+//                                updateCityList(city = city)
+//                            }
+//                        }
                     } else {
-                        _citiesWeather.value = ResultState.Error(result.message.toString())
+                        _citiesWeather.value = ResultState.Error(
+                            data = mutableListOf(result.data as WeatherModel),
+                            message = result.message.toString()
+                        )
                     }
                 }
             }

@@ -85,6 +85,7 @@ class WeatherActivity : AppCompatActivity() {
                     is ResultState.Error -> {
                         showContent()
                         it.message?.let { message -> snackbar(message) }
+                        it.data?.let { data -> updateView(data) }
                     }
                 }
             }

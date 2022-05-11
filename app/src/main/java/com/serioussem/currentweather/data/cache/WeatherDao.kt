@@ -17,10 +17,8 @@ interface WeatherDao {
     @Query("SELECT * FROM weather WHERE city = :city")
     suspend fun fetchWeather(city: String): WeatherModel
 
-    @Query("SELECT city  FROM weather")
-    suspend fun fetchCityList(): MutableList<String>
+    @Query("SELECT city  FROM weather ORDER BY id LIMIT 1")
+    fun fetchUserCity(): String
 
-    @Query("DELETE FROM weather")
-    suspend fun clearTable()
 
 }

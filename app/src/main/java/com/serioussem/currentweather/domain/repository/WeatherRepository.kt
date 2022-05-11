@@ -8,10 +8,6 @@ interface WeatherRepository{
 
     suspend fun fetchWeather(city: String): ResultState<WeatherModel>
 
-    fun fetchUserCity(): String
-
-    fun updateUserCity(city: String)
-
-    suspend fun fetchCityList(): MutableList<String>
+        fun fetchUserCity(): String
 
 }

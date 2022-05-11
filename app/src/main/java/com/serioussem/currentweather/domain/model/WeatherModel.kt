@@ -11,7 +11,9 @@ import androidx.room.PrimaryKey
     indices = [Index(value = ["city"], unique = true)]
 )
 data class WeatherModel(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    val id: Int = 0,
     @ColumnInfo(name = "city")
     val city: String = "",
     @ColumnInfo(name = "temperature")

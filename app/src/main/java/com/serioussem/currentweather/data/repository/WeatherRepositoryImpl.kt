@@ -38,6 +38,6 @@ class WeatherRepositoryImpl @Inject constructor(
     }
 
 
-    override fun fetchUserCity(): String = cacheDataSource.fetchUserCity()
+    override fun fetchCityList(): List<String> = cacheDataSource.fetchCityList()
 
 }

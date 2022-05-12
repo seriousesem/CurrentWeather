@@ -12,8 +12,8 @@ class CacheDataSource @Inject constructor(private val weatherDao: WeatherDao) {
         ResultState.Success( weatherDao.fetchWeather(city = city))
 
 
-    fun fetchUserCity(): String =
-        weatherDao.fetchUserCity()
+    fun fetchCityList(): List<String> =
+        weatherDao.fetchCityList()
 
 
     suspend fun saveWeather(weather: WeatherModel) =

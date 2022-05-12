@@ -4,6 +4,6 @@ import com.serioussem.currentweather.domain.repository.WeatherRepository
 import javax.inject.Inject
 
 class FetchCityListInteractor @Inject constructor(private val repository: WeatherRepository){
-         fun fetchCityList() = repository.fetchUserCity()
+         fun fetchCityList() = repository.fetchCityList()
 
 }

@@ -20,14 +20,11 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
     private val fetchWeatherInteractor: FetchWeatherInteractor,
-//    private val updateUserCityInteractor: UpdateUserCityInteractor,
-    private val fetchUserCityInteractor: FetchUserCityInteractor,
     private val fetchCityListInteractor: FetchCityListInteractor
 ) : ViewModel() {
 
-    private val userCity = fetchUserCityInteractor.fetchUserCity()
-    private var cityList: MutableList<String> = mutableListOf(FIRST_CITY, SECOND_CITY, userCity)
-
+    private val cacheCityList = fetchCityListInteractor.fetchCityList()
+    private var defaultCityList: MutableList<String> = mutableListOf(FIRST_CITY, SECOND_CITY)
 
 
     private var _citiesWeather =
@@ -36,30 +33,29 @@ class WeatherViewModel @Inject constructor(
 
 
     init {
-//        updateCityList()
         fetchCitiesWeather()
     }
 
     fun editUserCity(city: String) {
 
-        if (cityList.size <= 2) cityList.add(city) else cityList[2] = city
+        if (defaultCityList.size <= 2) defaultCityList.add(city) else defaultCityList[2] = city
     }
 
-//    private fun updateUserCity(city: String) =
-//        updateUserCityInteractor.updateUserCity(city = city)
-
-//    private fun updateCityList() {
-//        cacheList.clear()
-//        cacheList.addAll(fetchCityListInteractor.fetchCityList())
-////        if (cityList.size <= 2) cityList.add(city) else cityList[2] = city
-////        cityList.add(userCity)
-//        Log.d("Sem", "cacheList: $cacheList")
-////        Log.d("Sem", "cityList: $cityList")
-//    }
+    private fun selectCityList(): List<String> {
+        return when {
+            (cacheCityList.size < 3) -> defaultCityList
+            (cacheCityList.size >= 2 && defaultCityList.size == 3) -> defaultCityList
+            else -> {
+                cacheCityList
+            }
+        }
+    }
 
     fun fetchCitiesWeather() {
         _citiesWeather.value = ResultState.Loading()
-//        updateCityList()
+        val cityList = selectCityList()
+        Log.d("Sem", "cacheList: $cacheCityList")
+        Log.d("Sem", "cityList: $defaultCityList")
         viewModelScope.launch {
             cityList.forEach { city ->
                 launch {
@@ -67,14 +63,7 @@ class WeatherViewModel @Inject constructor(
                     if (result is ResultState.Success) {
                         _citiesWeather.value =
                             ResultState.Success(data = mutableListOf(result.data as WeatherModel))
-//                        updateUserCity(city = city)
-//                        when (city) {
-//                            FIRST_CITY -> {}
-//                            SECOND_CITY -> {}
-//                            city -> {
-//                                updateCityList(city = city)
-//                            }
-//                        }
+
                     } else {
                         _citiesWeather.value = ResultState.Error(
                             data = mutableListOf(result.data as WeatherModel),

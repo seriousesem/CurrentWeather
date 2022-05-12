@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey
 data class WeatherModel(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Int = 0,
+    val id: Int = 1,
     @ColumnInfo(name = "city")
     val city: String = "",
     @ColumnInfo(name = "temperature")

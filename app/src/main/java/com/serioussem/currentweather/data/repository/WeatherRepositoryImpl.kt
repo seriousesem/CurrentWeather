@@ -1,6 +1,7 @@
 package com.serioussem.currentweather.data.repository
 
 
+import android.util.Log
 import com.serioussem.currentweather.R
 import com.serioussem.currentweather.data.cache.CacheDataSource
 import com.serioussem.currentweather.data.cloud.CloudDataSource
@@ -22,21 +23,26 @@ class WeatherRepositoryImpl @Inject constructor(
 
     override suspend fun fetchWeather(city: String): ResultState<WeatherModel> {
         val cacheResult = cacheDataSource.fetchWeather(city = city)
+        val dataBaseCityList = fetchCityList()
         return if (networkInterceptor.isConnected()) {
             val cloudResult = cloudDataSource.fetchWeather(city = city)
             return if (cloudResult is ResultState.Success) {
-                cloudResult.data?.let { cacheDataSource.saveWeather(it) }
+                cloudResult.data?.let {
+                    if (dataBaseCityList.contains(it.city)) cacheDataSource.updateWeather(it) else
+                        cacheDataSource.saveWeather(it)
+                }
                 cloudResult
+
             } else {
                 ResultState.Error(message = cloudResult.message.toString())
             }
         } else {
-            ResultState.Error(data = cacheResult.data, message =
-                resourceProvider.string(R.string.no_internet_connection_message)
+            ResultState.Error(
+                data = cacheResult.data,
+                message = resourceProvider.string(R.string.no_internet_connection_message)
             )
         }
     }
-
 
     override fun fetchCityList(): List<String> = cacheDataSource.fetchCityList()
 

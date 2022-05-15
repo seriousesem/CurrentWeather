@@ -14,6 +14,7 @@ import com.serioussem.currentweather.domain.interactor.FetchUserCityInteractor
 import com.serioussem.currentweather.domain.interactor.FetchWeatherInteractor
 import com.serioussem.currentweather.domain.model.WeatherModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class WeatherViewModel @Inject constructor(
     private val fetchCityListInteractor: FetchCityListInteractor
 ) : ViewModel() {
 
-    private val cacheCityList = fetchCityListInteractor.fetchCityList()
+    private val cacheCityList : List<String> = fetchCityListInteractor.fetchCityList()
     private var defaultCityList: MutableList<String> = mutableListOf(FIRST_CITY, SECOND_CITY)
 
 
@@ -42,6 +43,7 @@ class WeatherViewModel @Inject constructor(
     }
 
     private fun selectCityList(): List<String> {
+
         return when {
             (cacheCityList.size < 3) -> defaultCityList
             (cacheCityList.size >= 2 && defaultCityList.size == 3) -> defaultCityList
@@ -56,9 +58,9 @@ class WeatherViewModel @Inject constructor(
         val cityList = selectCityList()
         Log.d("Sem", "cacheList: $cacheCityList")
         Log.d("Sem", "cityList: $defaultCityList")
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             cityList.forEach { city ->
-                launch {
+                launch{
                     val result = fetchWeatherInteractor.fetchWeather(city)
                     if (result is ResultState.Success) {
                         _citiesWeather.value =
@@ -69,6 +71,7 @@ class WeatherViewModel @Inject constructor(
                             data = mutableListOf(result.data as WeatherModel),
                             message = result.message.toString()
                         )
+                        defaultCityList.removeAt(2)
                     }
                 }
             }

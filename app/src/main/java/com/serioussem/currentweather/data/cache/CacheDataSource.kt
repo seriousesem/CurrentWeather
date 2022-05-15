@@ -9,16 +9,17 @@ import javax.inject.Inject
 class CacheDataSource @Inject constructor(private val weatherDao: WeatherDao) {
 
     suspend fun fetchWeather(city: String): ResultState<WeatherModel> =
-        ResultState.Success( weatherDao.fetchWeather(city = city))
-
-
-    fun fetchCityList(): List<String> =
-        weatherDao.fetchCityList()
-
+        ResultState.Success(weatherDao.fetchWeather(city = city))
 
     suspend fun saveWeather(weather: WeatherModel) =
         weatherDao.saveWeather(weather = weather)
 
+    suspend fun updateWeather(weather: WeatherModel) =
+        weatherDao.updateWeather(weather = weather)
+
+
+    fun fetchCityList(): List<String> =
+        weatherDao.fetchCityList()
 
 }
 

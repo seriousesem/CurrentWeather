@@ -27,10 +27,11 @@ class CloudDataSource @Inject constructor(
                     )
                 )
             } else {
-                ResultState.Error(resourceProvider.string(R.string.city_not_found))
+                ResultState.Error(message = resourceProvider.string(R.string.city_not_found))
             }
         } catch (e: Exception) {
-            ResultState.Error(resourceProvider.string(R.string.failed_to_load_data))
+            ResultState.Error(
+                message = resourceProvider.string(R.string.failed_to_load_data))
         }
     }
 }

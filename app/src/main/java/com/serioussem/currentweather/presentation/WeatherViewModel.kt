@@ -24,12 +24,13 @@ class WeatherViewModel @Inject constructor(
     private val fetchCityListInteractor: FetchCityListInteractor
 ) : ViewModel() {
 
-    private val cacheCityList : List<String> = fetchCityListInteractor.fetchCityList()
+    private val cacheCityList: List<String> by lazy { fetchCityListInteractor.fetchCityList() }
     private var defaultCityList: MutableList<String> = mutableListOf(FIRST_CITY, SECOND_CITY)
 
 
     private var _citiesWeather =
         MutableLiveData<ResultState<MutableList<WeatherModel>>>(ResultState.Init())
+
     val citiesWeather: LiveData<ResultState<MutableList<WeatherModel>>> = _citiesWeather
 
 
@@ -58,9 +59,10 @@ class WeatherViewModel @Inject constructor(
         val cityList = selectCityList()
         Log.d("Sem", "cacheList: $cacheCityList")
         Log.d("Sem", "cityList: $defaultCityList")
-        viewModelScope.launch(Dispatchers.IO) {
+
+        viewModelScope.launch {
             cityList.forEach { city ->
-                launch{
+                launch {
                     val result = fetchWeatherInteractor.fetchWeather(city)
                     if (result is ResultState.Success) {
                         _citiesWeather.value =
@@ -68,10 +70,8 @@ class WeatherViewModel @Inject constructor(
 
                     } else {
                         _citiesWeather.value = ResultState.Error(
-                            data = mutableListOf(result.data as WeatherModel),
                             message = result.message.toString()
                         )
-                        defaultCityList.removeAt(2)
                     }
                 }
             }

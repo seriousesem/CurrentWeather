@@ -1,13 +1,11 @@
 package com.serioussem.currentweather.data.repository
 
 
-import android.util.Log
 import com.serioussem.currentweather.R
 import com.serioussem.currentweather.data.cache.CacheDataSource
 import com.serioussem.currentweather.data.cloud.CloudDataSource
 import com.serioussem.currentweather.data.core.NetworkInterceptor
 import com.serioussem.currentweather.data.core.ResourceProvider
-import com.serioussem.currentweather.data.storage.SharedPrefsCityStorage
 import com.serioussem.currentweather.domain.core.ResultState
 import com.serioussem.currentweather.domain.model.WeatherModel
 import com.serioussem.currentweather.domain.repository.WeatherRepository
@@ -16,7 +14,6 @@ import javax.inject.Inject
 class WeatherRepositoryImpl @Inject constructor(
     private val cloudDataSource: CloudDataSource,
     private val cacheDataSource: CacheDataSource,
-    private val storage: SharedPrefsCityStorage,
     private val networkInterceptor: NetworkInterceptor,
     private val resourceProvider: ResourceProvider
 ) : WeatherRepository {

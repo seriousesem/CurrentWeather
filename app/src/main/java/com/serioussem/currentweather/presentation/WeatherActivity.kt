@@ -54,23 +54,18 @@ class WeatherActivity : AppCompatActivity() {
 
     private fun initData() {
         swipeRefresh()
-
     }
-
-
     private fun showContent() {
         hideView(binding.progressBar)
         showView(binding.contentContainer)
     }
-
     private fun showProgressbar() {
         showView(binding.progressBar)
         hideView(binding.contentContainer)
     }
 
     private fun initObservers() {
-        viewModel.apply {
-            citiesWeather.observe(this@WeatherActivity) {
+        viewModel.citiesWeather.observe(this@WeatherActivity) {
                 when (it) {
                     is ResultState.Init -> {
                         showProgressbar()
@@ -91,7 +86,6 @@ class WeatherActivity : AppCompatActivity() {
             }
         }
 
-    }
 
     private fun updateView(weatherList: MutableList<WeatherModel>) {
         binding.apply {

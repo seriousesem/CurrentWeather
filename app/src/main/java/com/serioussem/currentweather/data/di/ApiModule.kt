@@ -48,10 +48,6 @@ class ApiModule {
     @Singleton
     fun provideContext(@ApplicationContext context: Context): Context = context
 
-//    @Provides
-//
-//    fun provideBaseUrl() = WEATHER_URL
-
     @Provides
     @Singleton
     fun provideService(retrofit: Retrofit): WeatherApi = retrofit.create(WeatherApi::class.java)

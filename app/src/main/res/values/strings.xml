@@ -11,5 +11,6 @@
     <string name="enter_your_sity_name">Введіть назву свого міста</string>
     <string name="add_your_sity_name">Добавити своє місто</string>
     <string name="city_not_found">Місто не знайдено</string>
+    <string name="failed_to_load_data_from_database">Не вдалося завантажити дані з бази данних</string>
 
 </resources>

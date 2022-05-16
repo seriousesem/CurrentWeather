@@ -3,7 +3,6 @@ package com.serioussem.currentweather.presentation
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import androidx.activity.viewModels
 import com.serioussem.currentweather.R
 import com.serioussem.currentweather.core.Constants.FIRST_CITY
@@ -43,8 +42,8 @@ class WeatherActivity : AppCompatActivity() {
                 val userCity = editUserCity.text.toString()
                 if (userCity.isNotEmpty()) {
                     viewModel.apply {
-                        editUserCity(userCity)
-                        fetchCitiesWeather()
+                        saveUserCity(userCity)
+                        fetchWeather()
                     }
                     cleanEdit()
                 } else snackbar(resourceProvider.string(R.string.enter_your_sity_name))
@@ -55,18 +54,21 @@ class WeatherActivity : AppCompatActivity() {
     private fun initData() {
         swipeRefresh()
     }
+
     private fun showContent() {
         hideView(binding.progressBar)
         showView(binding.contentContainer)
     }
+
     private fun showProgressbar() {
         showView(binding.progressBar)
         hideView(binding.contentContainer)
     }
 
     private fun initObservers() {
-        viewModel.citiesWeather.observe(this@WeatherActivity) {
-                when (it) {
+        viewModel.citiesWeather.observe(this@WeatherActivity) { resultStateList ->
+            resultStateList.forEach { resultState ->
+                when (resultState) {
                     is ResultState.Init -> {
                         showProgressbar()
                     }
@@ -75,45 +77,45 @@ class WeatherActivity : AppCompatActivity() {
                     }
                     is ResultState.Success<*> -> {
                         showContent()
-                        it.data?.let { data -> updateView(data) }
+                        resultState.data?.let { data -> updateView(data) }
                     }
                     is ResultState.Error -> {
                         showContent()
-                        it.data?.let { data -> updateView(data) }
-                        it.message?.let { message -> snackbar(message) }
-                    }
-                }
-            }
-        }
-
-
-    private fun updateView(weatherList: MutableList<WeatherModel>) {
-        binding.apply {
-            weatherList.forEach { weather ->
-                val city = weather.city
-                val temperature = weather.temperature
-                when (city) {
-                    FIRST_CITY -> {
-                        firstCityName.text = city
-                        textFirstCityTemperature.text = updateTextView(temperature = temperature)
-                    }
-                    SECOND_CITY -> {
-                        secondCityName.text = city
-                        textSecondCityTemperature.text = updateTextView(temperature = temperature)
-                    }
-                    city -> {
-                        textUserCity.text = city
-                        textUserCityTemperature.text = updateTextView(temperature = temperature)
+                        resultState.data?.let { data -> updateView(data) }
+                        resultState.message?.let { message -> snackbar(message) }
                     }
                 }
             }
         }
     }
 
+
+    private fun updateView(weather: WeatherModel) {
+        binding.apply {
+            val city = weather.city
+            val temperature = weather.temperature
+            when (city) {
+                FIRST_CITY -> {
+                    firstCityName.text = city
+                    textFirstCityTemperature.text = updateTextView(temperature = temperature)
+                }
+                SECOND_CITY -> {
+                    secondCityName.text = city
+                    textSecondCityTemperature.text = updateTextView(temperature = temperature)
+                }
+                city -> {
+                    textUserCity.text = city
+                    textUserCityTemperature.text = updateTextView(temperature = temperature)
+                }
+            }
+        }
+    }
+
+
     private fun swipeRefresh() {
         binding.swipeRefreshContainer.setOnRefreshListener {
             viewModel.apply {
-                fetchCitiesWeather()
+                fetchWeather()
             }
             binding.swipeRefreshContainer.isRefreshing = false
         }

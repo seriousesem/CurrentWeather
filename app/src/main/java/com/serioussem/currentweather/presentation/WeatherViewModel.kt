@@ -33,7 +33,9 @@ class WeatherViewModel @Inject constructor(
         saveUserCityInteractor.saveUserCity(city = CityModel(city = city))
 
     fun fetchWeather() {
+        _citiesWeather.value?.clear()
         viewModelScope.launch {
+            _citiesWeather.value =
             fetchWeatherInteractor.fetchWeather()
         }
     }

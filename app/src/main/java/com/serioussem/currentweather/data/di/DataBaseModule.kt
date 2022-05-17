@@ -18,10 +18,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class DataBaseModule {
 
-//    @Provides
-//
-//    fun provideDataBaseName(): String = "weather.db"
-
     @Provides
     @Singleton
     fun provideWeatherDataBase(
@@ -37,5 +33,4 @@ class DataBaseModule {
     @Singleton
     fun provideWeatherDao(weatherDataBase: WeatherDataBase): WeatherDao =
         weatherDataBase.weatherDao()
-
 }

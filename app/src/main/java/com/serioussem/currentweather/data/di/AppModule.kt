@@ -20,7 +20,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class CoreModule {
+class AppModule {
 
     @Provides
     @Singleton
@@ -37,8 +37,8 @@ class CoreModule {
 
     @Provides
     @Singleton
-    fun provideCacheDataSource(weatherDao: WeatherDao, resourceProvider: ResourceProvider): CacheDataSource =
-        CacheDataSource(weatherDao = weatherDao, resourceProvider = resourceProvider)
+    fun provideCacheDataSource(weatherDao: WeatherDao): CacheDataSource =
+        CacheDataSource(weatherDao = weatherDao)
 
     @Provides
     @Singleton

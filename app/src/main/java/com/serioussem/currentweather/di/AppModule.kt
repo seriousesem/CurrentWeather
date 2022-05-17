@@ -1,4 +1,4 @@
-package com.serioussem.currentweather.data.di
+package com.serioussem.currentweather.di
 
 
 import android.content.Context
@@ -9,7 +9,6 @@ import com.serioussem.currentweather.data.cloud.WeatherApi
 import com.serioussem.currentweather.data.core.NetworkInterceptor
 import com.serioussem.currentweather.data.core.ResourceProvider
 import com.serioussem.currentweather.data.repository.WeatherRepositoryImpl
-import com.serioussem.currentweather.data.storage.SharedPrefsCityStorage
 import com.serioussem.currentweather.domain.repository.WeatherRepository
 import dagger.Module
 import dagger.Provides
@@ -54,5 +53,4 @@ class AppModule {
             networkInterceptor = networkInterceptor,
             resourceProvider = resourceProvider
         )
-
 }

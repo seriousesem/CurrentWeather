@@ -1,7 +1,7 @@
-package com.serioussem.currentweather.data.di
+package com.serioussem.currentweather.di
 
 import android.content.Context
-import com.serioussem.currentweather.core.Constants.WEATHER_URL
+import com.serioussem.currentweather.utils.Constants.WEATHER_URL
 import com.serioussem.currentweather.data.cloud.WeatherApi
 import com.serioussem.currentweather.data.core.NetworkInterceptor
 import dagger.Module
@@ -13,7 +13,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -34,7 +33,6 @@ class ApiModule {
     fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder().apply {
         connectTimeout(30, TimeUnit.SECONDS)
         readTimeout(30, TimeUnit.SECONDS)
-
     }.build()
 
     @Provides
@@ -51,5 +49,4 @@ class ApiModule {
     @Provides
     @Singleton
     fun provideService(retrofit: Retrofit): WeatherApi = retrofit.create(WeatherApi::class.java)
-
 }

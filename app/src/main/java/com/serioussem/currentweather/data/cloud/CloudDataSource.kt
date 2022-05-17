@@ -32,7 +32,8 @@ class CloudDataSource @Inject constructor(
             }
         } catch (e: Exception) {
             ResultState.Error(
-                message = resourceProvider.string(R.string.failed_to_load_data))
+                message = resourceProvider.string(R.string.failed_to_load_data)
+            )
         }
     }
 }

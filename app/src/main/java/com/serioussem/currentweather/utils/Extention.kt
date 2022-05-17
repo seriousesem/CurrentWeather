@@ -1,4 +1,4 @@
-package com.serioussem.currentweather.core
+package com.serioussem.currentweather.utils
 
 import android.app.Activity
 import android.view.View

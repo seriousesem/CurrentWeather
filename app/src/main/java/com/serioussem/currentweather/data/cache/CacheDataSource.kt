@@ -17,10 +17,6 @@ class CacheDataSource @Inject constructor(
     suspend fun saveWeather(weather: WeatherModel) =
         weatherDao.saveWeather(weather = weather)
 
-    suspend fun updateWeather(weather: WeatherModel) =
-        weatherDao.updateWeather(weather = weather)
-
-
     fun fetchCacheCityList(): MutableList<CityModel> {
         val dataBaseCityList = weatherDao.fetchDataBaseCityList()
         val cacheCityList = mutableListOf<CityModel>()

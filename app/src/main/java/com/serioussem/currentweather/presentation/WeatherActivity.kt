@@ -5,11 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.serioussem.currentweather.R
-import com.serioussem.currentweather.core.Constants.FIRST_CITY
-import com.serioussem.currentweather.core.Constants.SECOND_CITY
-import com.serioussem.currentweather.core.hideView
-import com.serioussem.currentweather.core.showView
-import com.serioussem.currentweather.core.snackbar
+import com.serioussem.currentweather.utils.Constants.FIRST_CITY
+import com.serioussem.currentweather.utils.Constants.SECOND_CITY
+import com.serioussem.currentweather.utils.hideView
+import com.serioussem.currentweather.utils.showView
+import com.serioussem.currentweather.utils.snackbar
 import com.serioussem.currentweather.data.core.ResourceProvider
 import com.serioussem.currentweather.databinding.ActivityWeatherBinding
 import com.serioussem.currentweather.domain.core.ResultState
@@ -81,14 +81,12 @@ class WeatherActivity : AppCompatActivity() {
                     }
                     is ResultState.Error -> {
                         showContent()
-                        resultState.data?.let { data -> updateView(data) }
                         resultState.message?.let { message -> snackbar(message) }
                     }
                 }
             }
         }
     }
-
 
     private fun updateView(weather: WeatherModel) {
         binding.apply {
@@ -111,7 +109,6 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
-
     private fun swipeRefresh() {
         binding.swipeRefreshContainer.setOnRefreshListener {
             viewModel.apply {
@@ -126,6 +123,7 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun updateTextView(temperature: Double): String = "$temperature °C"
+    private fun updateTextView(temperature: Double): String =
+        "$temperature ${resourceProvider.string(R.string.celsius)}"
 
 }

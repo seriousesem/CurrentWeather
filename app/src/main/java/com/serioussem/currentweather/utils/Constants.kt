@@ -1,4 +1,4 @@
-package com.serioussem.currentweather.core
+package com.serioussem.currentweather.utils
 
 
 object Constants {
@@ -8,4 +8,8 @@ object Constants {
     const val SHARED_PREFS_CITY = "shared_prefs_city"
     const val KEY_USER_CITY = "userCity"
     const val DATABASE_NAME = "weather.db"
+    const val APP_ID = "df407ee3089050448a58024e26abac06"
+    const val LANG = "uk"
+    const val UNITS = "metric"
+
 }

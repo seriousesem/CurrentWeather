@@ -2,8 +2,6 @@ package com.serioussem.currentweather.data.model
 
 
 import com.google.gson.annotations.SerializedName
-import com.serioussem.currentweather.core.Abstract
-import com.serioussem.currentweather.data.mapper.ApiModelMapper
 
 data class ApiModel(
 

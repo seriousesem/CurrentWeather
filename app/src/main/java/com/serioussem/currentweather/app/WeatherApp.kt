@@ -1,4 +1,4 @@
-package com.serioussem.currentweather
+package com.serioussem.currentweather.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

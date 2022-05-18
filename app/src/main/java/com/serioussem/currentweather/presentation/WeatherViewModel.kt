@@ -11,6 +11,7 @@ import com.serioussem.currentweather.domain.interactor.SaveUserCityInteractor
 import com.serioussem.currentweather.domain.model.CityModel
 import com.serioussem.currentweather.domain.model.WeatherModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,8 +34,7 @@ class WeatherViewModel @Inject constructor(
         saveUserCityInteractor.saveUserCity(city = CityModel(city = city))
 
     fun fetchWeather() {
-        _citiesWeather.value?.clear()
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _citiesWeather.value =
             fetchWeatherInteractor.fetchWeather()
         }

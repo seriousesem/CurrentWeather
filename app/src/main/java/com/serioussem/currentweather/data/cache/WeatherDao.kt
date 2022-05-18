@@ -15,6 +15,6 @@ interface WeatherDao {
     suspend fun fetchWeather(city: String): WeatherModel
 
     @Query("SELECT city  FROM weather ORDER BY id")
-    fun fetchDataBaseCityList(): List<String>
+     fun fetchDataBaseCityList(): List<String>
 
 }

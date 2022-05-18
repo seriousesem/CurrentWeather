@@ -1,13 +1,11 @@
 package com.serioussem.currentweather.di
 
-import android.content.Context
+
 import com.serioussem.currentweather.utils.Constants.WEATHER_URL
 import com.serioussem.currentweather.data.cloud.WeatherApi
-import com.serioussem.currentweather.data.core.NetworkInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -34,17 +32,6 @@ class ApiModule {
         connectTimeout(30, TimeUnit.SECONDS)
         readTimeout(30, TimeUnit.SECONDS)
     }.build()
-
-    @Provides
-    @Singleton
-    fun provideNetworkInterceptor(
-        @ApplicationContext context: Context
-    ): NetworkInterceptor =
-        NetworkInterceptor(context = context)
-
-    @Provides
-    @Singleton
-    fun provideContext(@ApplicationContext context: Context): Context = context
 
     @Provides
     @Singleton

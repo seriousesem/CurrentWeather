@@ -4,10 +4,11 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class NetworkInterceptor @Inject constructor(
-    private val context: Context
+class InternetConnection @Inject constructor(
+    @ApplicationContext private val context: Context
 ) {
     fun isConnected(): Boolean {
 

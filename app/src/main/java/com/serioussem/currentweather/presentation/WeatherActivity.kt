@@ -69,12 +69,10 @@ class WeatherActivity : AppCompatActivity() {
         viewModel.citiesWeather.observe(this@WeatherActivity) { resultStateList ->
             resultStateList.forEach { resultState ->
                 when (resultState) {
-                    is ResultState.Init -> {
-                        showProgressbar()
-                    }
-                    is ResultState.Loading -> {
-                        showProgressbar()
-                    }
+                    is ResultState.Init -> showProgressbar()
+
+                    is ResultState.Loading -> showProgressbar()
+
                     is ResultState.Success<*> -> {
                         showContent()
                         resultState.data?.let { data -> updateView(data) }
@@ -111,9 +109,7 @@ class WeatherActivity : AppCompatActivity() {
 
     private fun swipeRefresh() {
         binding.swipeRefreshContainer.setOnRefreshListener {
-            viewModel.apply {
-                fetchWeather()
-            }
+            viewModel.fetchWeather()
             binding.swipeRefreshContainer.isRefreshing = false
         }
     }
@@ -122,7 +118,6 @@ class WeatherActivity : AppCompatActivity() {
         binding.editUserCity.text.clear()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun updateTextView(temperature: Double): String =
         "$temperature ${resourceProvider.string(R.string.celsius)}"
 

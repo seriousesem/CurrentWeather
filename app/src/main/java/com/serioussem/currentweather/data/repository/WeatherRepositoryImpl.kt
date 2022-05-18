@@ -7,18 +7,19 @@ import com.serioussem.currentweather.utils.Constants.FIRST_CITY
 import com.serioussem.currentweather.utils.Constants.SECOND_CITY
 import com.serioussem.currentweather.data.cache.CacheDataSource
 import com.serioussem.currentweather.data.cloud.CloudDataSource
-import com.serioussem.currentweather.data.core.NetworkInterceptor
+import com.serioussem.currentweather.data.core.InternetConnection
 import com.serioussem.currentweather.data.core.ResourceProvider
 import com.serioussem.currentweather.domain.core.ResultState
 import com.serioussem.currentweather.domain.model.CityModel
 import com.serioussem.currentweather.domain.model.WeatherModel
 import com.serioussem.currentweather.domain.repository.WeatherRepository
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor(
     private val cloudDataSource: CloudDataSource,
     private val cacheDataSource: CacheDataSource,
-    private val networkInterceptor: NetworkInterceptor,
+    private val internetConnection: InternetConnection,
     private val resourceProvider: ResourceProvider
 ) : WeatherRepository {
 
@@ -30,24 +31,18 @@ class WeatherRepositoryImpl @Inject constructor(
     private var cityList: MutableList<CityModel> = defaultCityList
     private var cloudResult: ResultState<WeatherModel> = ResultState.Init()
     private var cacheResult: ResultState<WeatherModel> = ResultState.Init()
-    private val cloudResultStateList = mutableListOf<ResultState<WeatherModel>>()
-    private val cacheResultStateList = mutableListOf<ResultState<WeatherModel>>()
+    private val cloudResultList = mutableListOf<ResultState<WeatherModel>>()
+    private val cacheResultList = mutableListOf<ResultState<WeatherModel>>()
 
     override fun saveUserCity(cityModel: CityModel) {
-        if (cityList.size < 3) {
-            cityList.add(CityModel(city = cityModel.city))
-        } else cityList[2] = CityModel(city = cityModel.city)
+        if (cityList.size < 3) cityList.add(CityModel(city = cityModel.city))
+        else cityList[2] = CityModel(city = cityModel.city)
     }
 
-    override suspend fun fetchWeather(): MutableList<ResultState<WeatherModel>> {
-        return if (networkInterceptor.isConnected()) {
-            fillingCloudResultStateList()
-        } else {
-            fillingCacheResultStateList()
-        }
-    }
+    override suspend fun fetchWeather(): MutableList<ResultState<WeatherModel>> =
+        if (internetConnection.isConnected()) fillCloudResultStateList() else fillCacheResultStateList()
 
-    private fun fillingCityList() {
+    private fun fillCityList() {
         when {
             (cacheCityList.size < 3) ->
                 cityList
@@ -65,35 +60,37 @@ class WeatherRepositoryImpl @Inject constructor(
         cacheCityList = cacheDataSource.fetchCacheCityList()
     }
 
-    private suspend fun fillingCloudResultStateList(): MutableList<ResultState<WeatherModel>> {
-        updateCacheCityList()
-        fillingCityList()
+    private suspend fun fillCloudResultStateList(): MutableList<ResultState<WeatherModel>> {
+        fillCityList()
         cityList.forEach { cityModel ->
             cloudResult = cloudDataSource.fetchWeather(cityModel = cityModel)
             if (cloudResult is ResultState.Success) {
                 cacheDataSource.saveWeather(cloudResult.data as WeatherModel)
-                cloudResultStateList.add(cloudResult)
+                cloudResultList.add(cloudResult)
             } else {
                 cityList.remove(cityList.removeLast())
-                cloudResultStateList.add(cloudResult)
+                cloudResultList.add(cloudResult)
             }
         }
-        return cloudResultStateList
+        updateCacheCityList()
+        Log.d("Sem", "cityList: $cityList")
+        Log.d("Sem", "cacheCityList: $cacheCityList")
+        return cloudResultList
     }
 
-    private suspend fun fillingCacheResultStateList(): MutableList<ResultState<WeatherModel>> {
-        cacheResultStateList.add(
+    private suspend fun fillCacheResultStateList(): MutableList<ResultState<WeatherModel>> {
+        cacheResultList.add(
             ResultState.Error(
                 message = resourceProvider.string(R.string.no_internet_connection_message)
             )
         )
         updateCacheCityList()
-        fillingCityList()
+        fillCityList()
         cityList.forEach { cityModel ->
             cacheResult = cacheDataSource.fetchWeather(cityModel = cityModel)
-            cacheResultStateList.add(cacheResult)
+            cacheResultList.add(cacheResult)
         }
-        return cacheResultStateList
+        return cacheResultList
     }
 
 }

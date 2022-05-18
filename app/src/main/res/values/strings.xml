@@ -1,15 +1,15 @@
 <resources>
     <string name="app_name">Temp</string>
-    <string name="no_internet_connection_message">Помилка підключення до інтернета</string>
+    <string name="no_internet_connection_message">Помилка підключення до інтернета, данні не оновлені</string>
     <string name="server_not_response">Сервер не відповідає</string>
     <string name="failed_to_load_data">Не вдалося завантажити данні </string>
     <string name="first_sity_name">Київ</string>
     <string name="temperature">....°C</string>
     <string name="weather_logo">Картинка погоди</string>
-    <string name="second_sity_name">Львів</string>
+    <string name="second_sity_name">Дніпро</string>
     <string name="user_sity_name">Твоє місто</string>
     <string name="enter_your_sity_name">Введіть назву свого міста</string>
-    <string name="add_your_sity_name">Добавити своє місто</string>
+    <string name="add_your_sity_name">Додати своє місто</string>
     <string name="city_not_found">Місто не знайдено</string>
     <string name="failed_to_load_data_from_database">Не вдалося завантажити дані з бази данних</string>
     <string name="celsius">°C</string>

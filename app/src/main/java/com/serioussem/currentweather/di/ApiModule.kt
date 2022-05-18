@@ -1,6 +1,5 @@
 package com.serioussem.currentweather.di
 
-
 import com.serioussem.currentweather.utils.Constants.WEATHER_URL
 import com.serioussem.currentweather.data.cloud.WeatherApi
 import dagger.Module

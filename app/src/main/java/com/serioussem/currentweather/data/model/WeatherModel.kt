@@ -1,4 +1,4 @@
-package com.serioussem.currentweather.domain.model
+package com.serioussem.currentweather.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

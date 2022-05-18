@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.serioussem.currentweather.domain.core.ResultState
 import com.serioussem.currentweather.domain.interactor.FetchWeatherInteractor
 import com.serioussem.currentweather.domain.interactor.SaveUserCityInteractor
-import com.serioussem.currentweather.domain.model.CityModel
-import com.serioussem.currentweather.domain.model.WeatherModel
+import com.serioussem.currentweather.data.model.CityModel
+import com.serioussem.currentweather.data.model.WeatherModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -2,7 +2,7 @@ package com.serioussem.currentweather.data.cache
 
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import com.serioussem.currentweather.domain.model.WeatherModel
+import com.serioussem.currentweather.data.model.WeatherModel
 
 
 @Dao
@@ -15,6 +15,6 @@ interface WeatherDao {
     suspend fun fetchWeather(city: String): WeatherModel
 
     @Query("SELECT city  FROM weather ORDER BY id")
-     fun fetchDataBaseCityList(): List<String>
+    suspend fun fetchDataBaseCityList(): List<String>
 
 }

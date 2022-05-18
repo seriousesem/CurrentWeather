@@ -24,8 +24,7 @@ class DataBaseModule {
         context,
         WeatherDataBase::class.java,
         DATABASE_NAME
-    ).allowMainThreadQueries()
-        .build()
+    ).build()
 
     @Provides
     @Singleton

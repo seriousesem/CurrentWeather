@@ -2,7 +2,7 @@ package com.serioussem.currentweather.data.cache
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.serioussem.currentweather.domain.model.WeatherModel
+import com.serioussem.currentweather.data.model.WeatherModel
 
 
 @Database(

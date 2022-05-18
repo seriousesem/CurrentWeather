@@ -1,6 +1,6 @@
 package com.serioussem.currentweather.presentation
 
-import android.annotation.SuppressLint
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -13,7 +13,7 @@ import com.serioussem.currentweather.utils.snackbar
 import com.serioussem.currentweather.data.core.ResourceProvider
 import com.serioussem.currentweather.databinding.ActivityWeatherBinding
 import com.serioussem.currentweather.domain.core.ResultState
-import com.serioussem.currentweather.domain.model.WeatherModel
+import com.serioussem.currentweather.data.model.WeatherModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,7 +33,6 @@ class WeatherActivity : AppCompatActivity() {
         initView()
         initData()
         initObservers()
-
     }
 
     private fun initView() {
@@ -51,9 +50,7 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
-    private fun initData() {
-        swipeRefresh()
-    }
+    private fun initData() = swipeRefresh()
 
     private fun showContent() {
         hideView(binding.progressBar)
@@ -114,9 +111,7 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
-    private fun cleanEdit() {
-        binding.editUserCity.text.clear()
-    }
+    private fun cleanEdit() = binding.editUserCity.text.clear()
 
     private fun updateTextView(temperature: Double): String =
         "$temperature ${resourceProvider.string(R.string.celsius)}"

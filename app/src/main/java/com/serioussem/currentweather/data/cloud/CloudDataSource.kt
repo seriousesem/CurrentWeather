@@ -4,8 +4,8 @@ package com.serioussem.currentweather.data.cloud
 import com.serioussem.currentweather.R
 import com.serioussem.currentweather.data.core.ResourceProvider
 import com.serioussem.currentweather.domain.core.ResultState
-import com.serioussem.currentweather.domain.model.CityModel
-import com.serioussem.currentweather.domain.model.WeatherModel
+import com.serioussem.currentweather.data.model.CityModel
+import com.serioussem.currentweather.data.model.WeatherModel
 import javax.inject.Inject
 
 

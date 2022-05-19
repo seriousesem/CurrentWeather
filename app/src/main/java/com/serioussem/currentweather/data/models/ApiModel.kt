@@ -1,4 +1,4 @@
-package com.serioussem.currentweather.data.model
+package com.serioussem.currentweather.data.models
 
 
 import com.google.gson.annotations.SerializedName

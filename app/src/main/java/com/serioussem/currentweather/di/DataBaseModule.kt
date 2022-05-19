@@ -3,8 +3,8 @@ package com.serioussem.currentweather.di
 import android.content.Context
 import androidx.room.Room
 import com.serioussem.currentweather.utils.Constants.DATABASE_NAME
-import com.serioussem.currentweather.data.cache.WeatherDao
-import com.serioussem.currentweather.data.cache.WeatherDataBase
+import com.serioussem.currentweather.data.datasource.local.room.WeatherDao
+import com.serioussem.currentweather.data.datasource.local.room.WeatherDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

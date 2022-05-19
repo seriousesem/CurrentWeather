@@ -1,18 +1,17 @@
-package com.serioussem.currentweather.data.cache
+package com.serioussem.currentweather.data.datasource.local.room
 
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import com.serioussem.currentweather.data.model.WeatherModel
 
 
 @Dao
 interface WeatherDao {
 
     @Insert(onConflict = REPLACE)
-    suspend fun saveWeather(weather: WeatherModel)
+    suspend fun saveWeather(weather: WeatherEntity)
 
     @Query("SELECT * FROM weather WHERE city = :city")
-    suspend fun fetchWeather(city: String): WeatherModel
+    suspend fun fetchWeather(city: String): WeatherEntity
 
     @Query("SELECT city  FROM weather ORDER BY id")
     suspend fun fetchDataBaseCityList(): List<String>

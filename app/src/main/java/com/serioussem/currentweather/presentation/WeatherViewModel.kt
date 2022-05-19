@@ -6,10 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.serioussem.currentweather.domain.core.ResultState
-import com.serioussem.currentweather.domain.interactor.FetchWeatherInteractor
-import com.serioussem.currentweather.domain.interactor.SaveUserCityInteractor
-import com.serioussem.currentweather.data.model.CityModel
-import com.serioussem.currentweather.data.model.WeatherModel
+import com.serioussem.currentweather.domain.usecase.FetchWeatherUseCase
+import com.serioussem.currentweather.domain.usecase.SaveUserCityUseCase
+import com.serioussem.currentweather.domain.models.WeatherModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
-    private val fetchWeatherInteractor: FetchWeatherInteractor,
-    private val saveUserCityInteractor: SaveUserCityInteractor
+    private val fetchWeatherUseCase: FetchWeatherUseCase,
+    private val saveUserCityUseCase: SaveUserCityUseCase
 ) : ViewModel() {
 
     private var _citiesWeather :
@@ -31,12 +30,12 @@ class WeatherViewModel @Inject constructor(
     }
 
     fun saveUserCity(city: String) =
-        saveUserCityInteractor.saveUserCity(city = CityModel(city = city))
+        saveUserCityUseCase.saveUserCity(city = city)
 
     fun fetchWeather() {
         viewModelScope.launch(Dispatchers.IO) {
             _citiesWeather.value =
-            fetchWeatherInteractor.fetchWeather()
+            fetchWeatherUseCase.fetchWeather()
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.serioussem.currentweather.data.model
+package com.serioussem.currentweather.data.datasource.local.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
     tableName = "weather",
     indices = [Index(value = ["city"], unique = true)]
 )
-data class WeatherModel(
+data class WeatherEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo(name = "city")

@@ -5,15 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.serioussem.currentweather.R
+import com.serioussem.currentweather.data.core.ResourceProvider
 import com.serioussem.currentweather.utils.Constants.FIRST_CITY
 import com.serioussem.currentweather.utils.Constants.SECOND_CITY
-import com.serioussem.currentweather.utils.hideView
-import com.serioussem.currentweather.utils.showView
-import com.serioussem.currentweather.utils.snackbar
-import com.serioussem.currentweather.data.core.ResourceProvider
+import com.serioussem.currentweather.utils.*
 import com.serioussem.currentweather.databinding.ActivityWeatherBinding
 import com.serioussem.currentweather.domain.core.ResultState
-import com.serioussem.currentweather.data.model.WeatherModel
+import com.serioussem.currentweather.data.datasource.local.room.WeatherEntity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -83,7 +81,7 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateView(weather: WeatherModel) {
+    private fun updateView(weather: WeatherEntity) {
         binding.apply {
             val city = weather.city
             val temperature = weather.temperature

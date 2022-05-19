@@ -1,10 +1,10 @@
 package com.serioussem.currentweather.di
 
 
-import com.serioussem.currentweather.data.cache.CacheDataSource
-import com.serioussem.currentweather.data.cache.WeatherDao
-import com.serioussem.currentweather.data.cloud.CloudDataSource
-import com.serioussem.currentweather.data.cloud.WeatherApi
+import com.serioussem.currentweather.data.datasource.local.room.RoomDataSource
+import com.serioussem.currentweather.data.datasource.local.room.WeatherDao
+import com.serioussem.currentweather.data.datasource.remote.retrofit.RetrofitDataSource
+import com.serioussem.currentweather.data.datasource.remote.retrofit.WeatherApi
 import com.serioussem.currentweather.data.core.InternetConnection
 import com.serioussem.currentweather.data.core.ResourceProvider
 import com.serioussem.currentweather.data.repository.WeatherRepositoryImpl
@@ -24,28 +24,28 @@ class AppModule {
     fun provideCloudDataSource(
         weatherApi: WeatherApi,
         resourceProvider: ResourceProvider
-    ): CloudDataSource =
-        CloudDataSource(weatherApi, resourceProvider)
+    ): RetrofitDataSource =
+        RetrofitDataSource(weatherApi, resourceProvider)
 
     @Provides
     @Singleton
     fun provideCacheDataSource(
         weatherDao: WeatherDao,
         resourceProvider: ResourceProvider
-    ): CacheDataSource =
-        CacheDataSource(weatherDao = weatherDao, resourceProvider = resourceProvider)
+    ): RoomDataSource =
+        RoomDataSource(weatherDao = weatherDao, resourceProvider = resourceProvider)
 
     @Provides
     @Singleton
     fun provideWeatherRepository(
-        cloudDataSource: CloudDataSource,
-        cacheDataSource: CacheDataSource,
+        retrofitDataSource: RetrofitDataSource,
+        roomDataSource: RoomDataSource,
         internetConnection: InternetConnection,
         resourceProvider: ResourceProvider
     ): WeatherRepository =
         WeatherRepositoryImpl(
-            cloudDataSource = cloudDataSource,
-            cacheDataSource = cacheDataSource,
+            retrofitDataSource = retrofitDataSource,
+            roomDataSource = roomDataSource,
             internetConnection = internetConnection,
             resourceProvider = resourceProvider
         )

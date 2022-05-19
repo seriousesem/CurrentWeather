@@ -1,9 +1,8 @@
-package com.serioussem.currentweather.data.cloud
+package com.serioussem.currentweather.data.datasource.remote.retrofit
 
 import com.serioussem.currentweather.utils.Constants.APP_ID
 import com.serioussem.currentweather.utils.Constants.LANG
 import com.serioussem.currentweather.utils.Constants.UNITS
-import com.serioussem.currentweather.data.models.ApiModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

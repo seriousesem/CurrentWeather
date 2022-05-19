@@ -9,5 +9,5 @@ sealed class ResultState<T>(
     class Init<T>(emptyState: Int? = null) : ResultState<T>(empty = emptyState)
     class Loading<T> : ResultState<T>()
     class Success<T>(data: T) : ResultState<T>(data = data)
-    class Error<T>(message: String, data: T? = null) : ResultState<T>(data = data, message = message)
+    class Error<T>(message: String) : ResultState<T>(message = message)
 }

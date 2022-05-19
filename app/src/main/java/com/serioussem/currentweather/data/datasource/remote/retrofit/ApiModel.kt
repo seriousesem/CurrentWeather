@@ -1,4 +1,4 @@
-package com.serioussem.currentweather.data.models
+package com.serioussem.currentweather.data.datasource.remote.retrofit
 
 
 import com.google.gson.annotations.SerializedName

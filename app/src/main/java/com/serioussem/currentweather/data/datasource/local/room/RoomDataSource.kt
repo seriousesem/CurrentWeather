@@ -1,47 +1,45 @@
-package com.serioussem.currentweather.data.cache
+package com.serioussem.currentweather.data.datasource.local.room
 
 
 import android.database.sqlite.SQLiteException
 import com.serioussem.currentweather.R
+import com.serioussem.currentweather.data.core.ResponseResult
 import com.serioussem.currentweather.data.core.ResourceProvider
-import com.serioussem.currentweather.domain.core.ResultState
-import com.serioussem.currentweather.data.model.CityModel
-import com.serioussem.currentweather.data.model.WeatherModel
 import com.serioussem.currentweather.utils.Constants.FIRST_CITY
 import com.serioussem.currentweather.utils.Constants.SECOND_CITY
 import javax.inject.Inject
 
 
-class CacheDataSource @Inject constructor(
+class RoomDataSource @Inject constructor(
     private val weatherDao: WeatherDao,
     private val resourceProvider: ResourceProvider
 ) {
-    suspend fun fetchWeather(cityModel: CityModel): ResultState<WeatherModel> =
+    suspend fun fetchWeather(city: String): ResponseResult<WeatherEntity> =
         try {
-            ResultState.Success(weatherDao.fetchWeather(city = cityModel.city))
+            ResponseResult.Success(weatherDao.fetchWeather(city = city))
         } catch (e: SQLiteException) {
-            ResultState.Error(
+            ResponseResult.Error(
                 message = e.message.toString()
             )
         } catch (e: Exception) {
-            ResultState.Error(
+            ResponseResult.Error(
                 message = resourceProvider.string(R.string.failed_to_load_data_from_database)
             )
         }
 
-    suspend fun saveWeather(weather: WeatherModel) =
+    suspend fun saveWeather(weather: WeatherEntity) =
         weatherDao.saveWeather(weather = weather)
 
-    suspend fun fetchCacheCityList(): MutableList<CityModel> =
+    suspend fun fetchCacheCityList(): MutableList<String> =
         try {
             val dataBaseCityList = weatherDao.fetchDataBaseCityList()
-            val cacheCityList = mutableListOf<CityModel>()
+            val cacheCityList = mutableListOf<String>()
             dataBaseCityList.forEach { city ->
-                cacheCityList.add(CityModel(city = city))
+                cacheCityList.add(city)
             }
             cacheCityList
         } catch (e: Exception) {
-            mutableListOf(CityModel(city = FIRST_CITY), CityModel(city = SECOND_CITY))
+            mutableListOf(FIRST_CITY, SECOND_CITY)
         }
 }
 

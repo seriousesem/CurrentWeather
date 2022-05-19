@@ -1,7 +1,7 @@
 package com.serioussem.currentweather.di
 
 import com.serioussem.currentweather.utils.Constants.WEATHER_URL
-import com.serioussem.currentweather.data.cloud.WeatherApi
+import com.serioussem.currentweather.data.datasource.remote.retrofit.WeatherApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

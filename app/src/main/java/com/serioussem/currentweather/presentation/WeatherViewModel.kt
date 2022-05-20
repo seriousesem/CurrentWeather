@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.serioussem.currentweather.domain.core.ResultState
+import com.serioussem.currentweather.domain.core.DomainResult
 import com.serioussem.currentweather.domain.usecase.FetchWeatherUseCase
 import com.serioussem.currentweather.domain.usecase.SaveUserCityUseCase
-import com.serioussem.currentweather.domain.models.WeatherModel
+import com.serioussem.currentweather.domain.models.DomainWeatherModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,9 +21,9 @@ class WeatherViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _citiesWeather :
-        MutableLiveData<MutableList<ResultState<WeatherModel>>> = MutableLiveData()
+        MutableLiveData<MutableList<DomainResult<DomainWeatherModel?>>> = MutableLiveData()
 
-    val citiesWeather: LiveData<MutableList<ResultState<WeatherModel>>> = _citiesWeather
+    val citiesWeather: LiveData<MutableList<DomainResult<DomainWeatherModel?>>> = _citiesWeather
 
     init {
         fetchWeather()

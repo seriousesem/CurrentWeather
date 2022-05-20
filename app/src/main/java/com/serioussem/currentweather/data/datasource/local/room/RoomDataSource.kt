@@ -3,8 +3,10 @@ package com.serioussem.currentweather.data.datasource.local.room
 
 import android.database.sqlite.SQLiteException
 import com.serioussem.currentweather.R
-import com.serioussem.currentweather.data.core.ResponseResult
+import com.serioussem.currentweather.data.core.DataResult
 import com.serioussem.currentweather.data.core.ResourceProvider
+import com.serioussem.currentweather.data.datasource.WeatherDataSource
+import com.serioussem.currentweather.data.datasource.models.DataWeatherModel
 import com.serioussem.currentweather.utils.Constants.FIRST_CITY
 import com.serioussem.currentweather.utils.Constants.SECOND_CITY
 import javax.inject.Inject
@@ -13,21 +15,22 @@ import javax.inject.Inject
 class RoomDataSource @Inject constructor(
     private val weatherDao: WeatherDao,
     private val resourceProvider: ResourceProvider
-) {
-    suspend fun fetchWeather(city: String): ResponseResult<WeatherEntity> =
+) : WeatherDataSource {
+
+    override suspend fun fetchWeather(city: String): DataResult<DataWeatherModel?> =
         try {
-            ResponseResult.Success(weatherDao.fetchWeather(city = city))
+            DataResult.Success(weatherDao.fetchWeather(city = city))
         } catch (e: SQLiteException) {
-            ResponseResult.Error(
+            DataResult.Error(
                 message = e.message.toString()
             )
         } catch (e: Exception) {
-            ResponseResult.Error(
+            DataResult.Error(
                 message = resourceProvider.string(R.string.failed_to_load_data_from_database)
             )
         }
 
-    suspend fun saveWeather(weather: WeatherEntity) =
+    suspend fun saveWeather(weather: DataWeatherModel) =
         weatherDao.saveWeather(weather = weather)
 
     suspend fun fetchCacheCityList(): MutableList<String> =

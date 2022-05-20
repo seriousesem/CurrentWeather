@@ -10,8 +10,8 @@ import com.serioussem.currentweather.utils.Constants.FIRST_CITY
 import com.serioussem.currentweather.utils.Constants.SECOND_CITY
 import com.serioussem.currentweather.utils.*
 import com.serioussem.currentweather.databinding.ActivityWeatherBinding
-import com.serioussem.currentweather.domain.core.ResultState
-import com.serioussem.currentweather.data.datasource.local.room.WeatherEntity
+import com.serioussem.currentweather.domain.core.DomainResult
+import com.serioussem.currentweather.domain.models.DomainWeatherModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -64,15 +64,15 @@ class WeatherActivity : AppCompatActivity() {
         viewModel.citiesWeather.observe(this@WeatherActivity) { resultStateList ->
             resultStateList.forEach { resultState ->
                 when (resultState) {
-                    is ResultState.Init -> showProgressbar()
+                    is DomainResult.Init -> showProgressbar()
 
-                    is ResultState.Loading -> showProgressbar()
+                    is DomainResult.Loading -> showProgressbar()
 
-                    is ResultState.Success<*> -> {
+                    is DomainResult.Success<*> -> {
                         showContent()
                         resultState.data?.let { data -> updateView(data) }
                     }
-                    is ResultState.Error -> {
+                    is DomainResult.Error -> {
                         showContent()
                         resultState.message?.let { message -> snackbar(message) }
                     }
@@ -81,7 +81,7 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateView(weather: WeatherEntity) {
+    private fun updateView(weather: DomainWeatherModel) {
         binding.apply {
             val city = weather.city
             val temperature = weather.temperature

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.serioussem.currentweather.utils.Constants.DATABASE_NAME
 import com.serioussem.currentweather.data.datasource.local.room.WeatherDao
-import com.serioussem.currentweather.data.datasource.local.room.WeatherDataBase
+import com.serioussem.currentweather.data.datasource.local.room.RoomDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,20 +14,20 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DataBaseModule {
+object DataBaseModule {
 
     @Provides
     @Singleton
     fun provideWeatherDataBase(
         @ApplicationContext context: Context
-    ): WeatherDataBase = Room.databaseBuilder(
+    ): RoomDataBase = Room.databaseBuilder(
         context,
-        WeatherDataBase::class.java,
+        RoomDataBase::class.java,
         DATABASE_NAME
     ).build()
 
     @Provides
     @Singleton
-    fun provideWeatherDao(weatherDataBase: WeatherDataBase): WeatherDao =
-        weatherDataBase.weatherDao()
+    fun provideWeatherDao(roomDataBase: RoomDataBase): WeatherDao =
+        roomDataBase.weatherDao()
 }

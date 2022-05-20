@@ -1,9 +1,9 @@
-package com.serioussem.currentweather.data.datasource.remote.retrofit
+package com.serioussem.currentweather.data.datasource.models
 
 
 import com.google.gson.annotations.SerializedName
 
-data class ApiModel(
+data class ApiResponse(
 
     @field:SerializedName("visibility")
     val visibility: Int? = null,

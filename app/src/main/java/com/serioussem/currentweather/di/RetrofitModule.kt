@@ -1,7 +1,7 @@
 package com.serioussem.currentweather.di
 
 import com.serioussem.currentweather.utils.Constants.WEATHER_URL
-import com.serioussem.currentweather.data.datasource.remote.retrofit.WeatherApi
+import com.serioussem.currentweather.data.datasource.remote.retrofit.RetrofitService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,16 +14,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class ApiModule {
-
-    @Provides
-    @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
-        Retrofit.Builder().apply {
-            baseUrl(WEATHER_URL)
-            addConverterFactory(GsonConverterFactory.create())
-            client(okHttpClient)
-        }.build()
+object RetrofitModule {
 
     @Provides
     @Singleton
@@ -34,5 +25,12 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideService(retrofit: Retrofit): WeatherApi = retrofit.create(WeatherApi::class.java)
+    fun provideRetrofitService(okHttpClient: OkHttpClient): RetrofitService {
+        return Retrofit.Builder().apply {
+            baseUrl(WEATHER_URL)
+            addConverterFactory(GsonConverterFactory.create())
+            client(okHttpClient)
+        }.build()
+            .create(RetrofitService::class.java)
+    }
 }

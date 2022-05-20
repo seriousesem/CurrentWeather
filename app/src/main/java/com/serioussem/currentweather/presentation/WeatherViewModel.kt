@@ -10,18 +10,18 @@ import com.serioussem.currentweather.domain.usecase.FetchWeatherUseCase
 import com.serioussem.currentweather.domain.usecase.SaveUserCityUseCase
 import com.serioussem.currentweather.domain.models.DomainWeatherModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.serioussem.currentweather.utils.Dispatchers
 import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
     private val fetchWeatherUseCase: FetchWeatherUseCase,
-    private val saveUserCityUseCase: SaveUserCityUseCase
+    private val saveUserCityUseCase: SaveUserCityUseCase,
+    private val dispatchers: Dispatchers
 ) : ViewModel() {
 
-    private var _citiesWeather :
-        MutableLiveData<MutableList<DomainResult<DomainWeatherModel?>>> = MutableLiveData()
+    private var _citiesWeather:
+            MutableLiveData<MutableList<DomainResult<DomainWeatherModel?>>> = MutableLiveData()
 
     val citiesWeather: LiveData<MutableList<DomainResult<DomainWeatherModel?>>> = _citiesWeather
 
@@ -33,9 +33,9 @@ class WeatherViewModel @Inject constructor(
         saveUserCityUseCase.saveUserCity(city = city)
 
     fun fetchWeather() {
-        viewModelScope.launch(Dispatchers.IO) {
+        dispatchers.launchBackground(viewModelScope) {
             _citiesWeather.value =
-            fetchWeatherUseCase.fetchWeather()
+                fetchWeatherUseCase.fetchWeather()
         }
     }
 }

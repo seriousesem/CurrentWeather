@@ -29,10 +29,10 @@ class WeatherRepositoryImpl @Inject constructor(
     )
     private var cacheCityList: MutableList<String> = mutableListOf()
     private var cityList: MutableList<String> = defaultCityList
-    private var cloudResult: DataResult<DataWeatherModel?> = DataResult.Init()
-    private var cacheResult: DataResult<DataWeatherModel?> = DataResult.Init()
-    private val cloudResultList = mutableListOf<DomainResult<DomainWeatherModel?>>()
-    private val cacheResultList = mutableListOf<DomainResult<DomainWeatherModel?>>()
+    private var remoteResult: DataResult<DataWeatherModel?> = DataResult.Init()
+    private var localResult: DataResult<DataWeatherModel?> = DataResult.Init()
+    private val remoteResultList = mutableListOf<DomainResult<DomainWeatherModel?>>()
+    private val localResultList = mutableListOf<DomainResult<DomainWeatherModel?>>()
 
     override fun saveUserCity(city: String) {
         if (cityList.size < 3) {
@@ -42,15 +42,15 @@ class WeatherRepositoryImpl @Inject constructor(
 
     override suspend fun fetchWeather(): MutableList<DomainResult<DomainWeatherModel?>> {
         return if (internetConnection.isConnected()) {
-            updateCloudResultList()
+            updateRemoteResultList()
         } else {
-            updateCacheResultList()
+            updateLocalResultList()
         }
     }
 
     private fun updateCityList() {
         when {
-            (cacheCityList.size >= 2 && cityList.size == 3) -> cityList
+            (cacheCityList.size < 3 || cityList.size == 3) -> cityList
 
             else -> {
                 cityList.add(cacheCityList.removeLast())
@@ -64,7 +64,7 @@ class WeatherRepositoryImpl @Inject constructor(
     }
 
     private fun provideInternetConnectionError() =
-        cacheResultList.add(
+        localResultList.add(
             mapper.map(
                 data = DataResult.Error(
                     message = resourceProvider.string(R.string.no_internet_connection_message)
@@ -73,31 +73,32 @@ class WeatherRepositoryImpl @Inject constructor(
 
         )
 
-    private suspend fun updateCloudResultList(): MutableList<DomainResult<DomainWeatherModel?>> {
-        updateCacheCityList()
+    private suspend fun updateRemoteResultList(): MutableList<DomainResult<DomainWeatherModel?>> {
+//        updateCacheCityList()
         updateCityList()
         cityList.forEach { cityModel ->
-            cloudResult = retrofitDataSource.fetchWeather(city = cityModel)
-            if (cloudResult is DataResult.Success) {
-                roomDataSource.saveWeather(cloudResult.data as DataWeatherModel)
-                cloudResultList.add(mapper.map(data = cloudResult))
+            remoteResult = retrofitDataSource.fetchWeather(city = cityModel)
+            if (remoteResult is DataResult.Success) {
+                roomDataSource.saveWeather(remoteResult.data as DataWeatherModel)
+                remoteResultList.add(mapper.map(data = remoteResult))
             } else {
                 cityList.remove(cityList.removeLast())
-                cloudResultList.add(mapper.map(data = cloudResult))
+                remoteResultList.add(mapper.map(data = remoteResult))
             }
         }
-        return cloudResultList
+
+        return remoteResultList
     }
 
-    private suspend fun updateCacheResultList(): MutableList<DomainResult<DomainWeatherModel?>> {
+    private suspend fun updateLocalResultList(): MutableList<DomainResult<DomainWeatherModel?>> {
         updateCacheCityList()
         updateCityList()
         provideInternetConnectionError()
         cityList.forEach { cityModel ->
-            cacheResult = roomDataSource.fetchWeather(city = cityModel)
-            cacheResultList.add(mapper.map(data = cacheResult))
+            localResult = roomDataSource.fetchWeather(city = cityModel)
+            localResultList.add(mapper.map(data = localResult))
         }
-        return cacheResultList
+        return localResultList
     }
 }
 

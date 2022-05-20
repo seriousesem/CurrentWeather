@@ -33,18 +33,18 @@ class RoomDataSource @Inject constructor(
     suspend fun saveWeather(weather: DataWeatherModel) =
         weatherDao.saveWeather(weather = weather)
 
-    suspend fun fetchCacheCityList(): MutableList<String> =
-        try {
-            val dataBaseCityList = weatherDao.fetchDataBaseCityList()
-            val cacheCityList = mutableListOf<String>()
+    suspend fun fetchCacheCityList(): MutableList<String> {
+        val dataBaseCityList: List<String> = try{
+            weatherDao.fetchDataBaseCityList()
+        }catch (e: Exception){
+            listOf(FIRST_CITY, SECOND_CITY)
+        }
+        val cacheCityList = mutableListOf<String>()
             dataBaseCityList.forEach { city ->
                 cacheCityList.add(city)
             }
-            cacheCityList
-        } catch (e: Exception) {
-            mutableListOf(FIRST_CITY, SECOND_CITY)
-        }
+        return cacheCityList
+    }
 }
-
 
 

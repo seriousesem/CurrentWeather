@@ -76,6 +76,7 @@ class WeatherActivity : AppCompatActivity() {
                         showContent()
                         resultState.message?.let { message -> snackbar(message) }
                     }
+                   
                 }
             }
         }

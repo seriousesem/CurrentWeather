@@ -12,7 +12,7 @@ import com.serioussem.currentweather.data.datasource.remote.retrofit.RetrofitDat
 import com.serioussem.currentweather.data.datasource.mappers.DataResultToDomainResultMapper
 import com.serioussem.currentweather.data.datasource.models.DataWeatherModel
 import com.serioussem.currentweather.domain.core.DomainResult
-import com.serioussem.currentweather.domain.models.DomainWeatherModel
+import com.serioussem.currentweather.domain.models.DomainModel
 import com.serioussem.currentweather.domain.repository.WeatherRepository
 import javax.inject.Inject
 
@@ -31,8 +31,8 @@ class WeatherRepositoryImpl @Inject constructor(
     private var cityList: MutableList<String> = defaultCityList
     private var remoteResult: DataResult<DataWeatherModel?> = DataResult.Init()
     private var localResult: DataResult<DataWeatherModel?> = DataResult.Init()
-    private val remoteResultList = mutableListOf<DomainResult<DomainWeatherModel?>>()
-    private val localResultList = mutableListOf<DomainResult<DomainWeatherModel?>>()
+    private val remoteResultList = mutableListOf<DomainResult<DomainModel?>>()
+    private val localResultList = mutableListOf<DomainResult<DomainModel?>>()
 
     override fun saveUserCity(city: String) {
         if (cityList.size < 3) {
@@ -40,7 +40,7 @@ class WeatherRepositoryImpl @Inject constructor(
         } else cityList[2] = city
     }
 
-    override suspend fun fetchWeather(): MutableList<DomainResult<DomainWeatherModel?>> {
+    override suspend fun fetchWeather(): MutableList<DomainResult<DomainModel?>> {
         return if (internetConnection.isConnected()) {
             updateRemoteResultList()
         } else {
@@ -73,7 +73,7 @@ class WeatherRepositoryImpl @Inject constructor(
 
         )
 
-    private suspend fun updateRemoteResultList(): MutableList<DomainResult<DomainWeatherModel?>> {
+    private suspend fun updateRemoteResultList(): MutableList<DomainResult<DomainModel?>> {
 //        updateCacheCityList()
         updateCityList()
         cityList.forEach { cityModel ->
@@ -90,7 +90,7 @@ class WeatherRepositoryImpl @Inject constructor(
         return remoteResultList
     }
 
-    private suspend fun updateLocalResultList(): MutableList<DomainResult<DomainWeatherModel?>> {
+    private suspend fun updateLocalResultList(): MutableList<DomainResult<DomainModel?>> {
         updateCacheCityList()
         updateCityList()
         provideInternetConnectionError()

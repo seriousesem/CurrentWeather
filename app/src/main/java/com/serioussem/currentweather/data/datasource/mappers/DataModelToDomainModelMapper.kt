@@ -2,11 +2,11 @@ package com.serioussem.currentweather.data.datasource.mappers
 
 
 import com.serioussem.currentweather.data.datasource.models.DataWeatherModel
-import com.serioussem.currentweather.domain.core.BaseMapper
-import com.serioussem.currentweather.domain.models.DomainWeatherModel
+import com.serioussem.currentweather.domain.core.Mapper
+import com.serioussem.currentweather.domain.models.DomainModel
 import javax.inject.Inject
 
-class DataModelToDomainModelMapper @Inject constructor(): BaseMapper<DataWeatherModel?, DomainWeatherModel?> {
-    override fun map(data: DataWeatherModel?): DomainWeatherModel? =
-        data?.let { DomainWeatherModel(city = it.city, temperature = data.temperature) }
+class DataModelToDomainModelMapper @Inject constructor(): Mapper<DataWeatherModel?, DomainModel?> {
+    override fun map(data: DataWeatherModel?): DomainModel? =
+        data?.let { DomainModel(city = it.city, temperature = data.temperature) }
 }

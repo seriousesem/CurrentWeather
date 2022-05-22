@@ -1,6 +1,6 @@
 package com.serioussem.currentweather.domain.models
 
-data class DomainWeatherModel(
+data class DomainModel(
     val city: String,
     val temperature: Double
 )

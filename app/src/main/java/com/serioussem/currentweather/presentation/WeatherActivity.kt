@@ -11,7 +11,7 @@ import com.serioussem.currentweather.utils.Constants.SECOND_CITY
 import com.serioussem.currentweather.utils.*
 import com.serioussem.currentweather.databinding.ActivityWeatherBinding
 import com.serioussem.currentweather.domain.core.DomainResult
-import com.serioussem.currentweather.domain.models.DomainWeatherModel
+import com.serioussem.currentweather.domain.models.DomainModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -82,7 +82,7 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateView(weather: DomainWeatherModel) {
+    private fun updateView(weather: DomainModel) {
         binding.apply {
             val city = weather.city
             val temperature = weather.temperature

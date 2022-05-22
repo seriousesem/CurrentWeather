@@ -4,7 +4,7 @@ package com.serioussem.currentweather.data.datasource.remote.retrofit
 import com.serioussem.currentweather.R
 import com.serioussem.currentweather.data.core.ResourceProvider
 import com.serioussem.currentweather.data.core.DataResult
-import com.serioussem.currentweather.data.datasource.WeatherDataSource
+import com.serioussem.currentweather.domain.core.DataSource
 import com.serioussem.currentweather.data.datasource.mappers.ApiResponseToDataModelMapper
 import com.serioussem.currentweather.data.datasource.models.DataWeatherModel
 import javax.inject.Inject
@@ -14,7 +14,7 @@ class RetrofitDataSource @Inject constructor(
     private val retrofitService: RetrofitService,
     private val apiModelMapper: ApiResponseToDataModelMapper,
     private val resourceProvider: ResourceProvider
-): WeatherDataSource {
+): DataSource {
 
     override suspend fun fetchWeather(city: String): DataResult<DataWeatherModel?> {
 

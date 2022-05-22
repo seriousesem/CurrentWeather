@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteException
 import com.serioussem.currentweather.R
 import com.serioussem.currentweather.data.core.DataResult
 import com.serioussem.currentweather.data.core.ResourceProvider
-import com.serioussem.currentweather.data.datasource.WeatherDataSource
+import com.serioussem.currentweather.domain.core.DataSource
 import com.serioussem.currentweather.data.datasource.models.DataWeatherModel
 import com.serioussem.currentweather.utils.Constants.FIRST_CITY
 import com.serioussem.currentweather.utils.Constants.SECOND_CITY
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class RoomDataSource @Inject constructor(
     private val weatherDao: WeatherDao,
     private val resourceProvider: ResourceProvider
-) : WeatherDataSource {
+) : DataSource {
 
     override suspend fun fetchWeather(city: String): DataResult<DataWeatherModel?> =
         try {

@@ -20,10 +20,10 @@ class WeatherViewModel @Inject constructor(
     private val dispatchers: Dispatchers
 ) : ViewModel() {
 
-    private var _citiesWeather:
-            MutableLiveData<MutableList<DomainResult<DomainModel?>>> = MutableLiveData()
+    private var weatherMutableList:
+            MutableLiveData<MutableList<DomainResult<DomainModel>>> = MutableLiveData()
 
-    val citiesWeather: LiveData<MutableList<DomainResult<DomainModel?>>> = _citiesWeather
+    val weatherList: LiveData<MutableList<DomainResult<DomainModel>>> = weatherMutableList
 
     init {
         fetchWeather()
@@ -34,7 +34,7 @@ class WeatherViewModel @Inject constructor(
 
     fun fetchWeather() {
         dispatchers.launchBackground(viewModelScope) {
-            _citiesWeather.value =
+            weatherMutableList.value =
                 fetchWeatherUseCase.fetchWeather()
         }
     }

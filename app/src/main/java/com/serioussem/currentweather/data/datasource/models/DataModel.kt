@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
     tableName = "weather",
     indices = [Index(value = ["city"], unique = true)]
 )
-data class DataWeatherModel(
+data class DataModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo(name = "city")

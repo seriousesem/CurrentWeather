@@ -61,22 +61,21 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.citiesWeather.observe(this@WeatherActivity) { resultStateList ->
-            resultStateList.forEach { resultState ->
-                when (resultState) {
+        viewModel.weatherList.observe(this@WeatherActivity) { weatherList ->
+            weatherList.forEach { result ->
+                when (result) {
                     is DomainResult.Init -> showProgressbar()
 
                     is DomainResult.Loading -> showProgressbar()
 
                     is DomainResult.Success<*> -> {
                         showContent()
-                        resultState.data?.let { data -> updateView(data) }
+                       updateView(result.data as DomainModel)
                     }
                     is DomainResult.Error -> {
                         showContent()
-                        resultState.message?.let { message -> snackbar(message) }
+                        snackbar(result.message as String)
                     }
-                   
                 }
             }
         }

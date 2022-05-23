@@ -1,6 +1,6 @@
 package com.serioussem.currentweather.data.datasource.remote.retrofit
 
-import com.serioussem.currentweather.data.datasource.models.ApiResponse
+import com.serioussem.currentweather.data.datasource.models.ApiModel
 import com.serioussem.currentweather.utils.Constants.APP_ID
 import com.serioussem.currentweather.utils.Constants.LANG
 import com.serioussem.currentweather.utils.Constants.UNITS
@@ -16,7 +16,7 @@ interface RetrofitService {
         @Query("appid") app_id: String = APP_ID,
         @Query("lang") lang: String = LANG,
         @Query("units") units: String = UNITS
-    ): Response<ApiResponse>
+    ): Response<ApiModel>
 }
 
 

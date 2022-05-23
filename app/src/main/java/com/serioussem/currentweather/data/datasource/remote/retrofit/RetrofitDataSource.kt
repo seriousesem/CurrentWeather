@@ -5,28 +5,27 @@ import com.serioussem.currentweather.R
 import com.serioussem.currentweather.data.core.ResourceProvider
 import com.serioussem.currentweather.data.core.DataResult
 import com.serioussem.currentweather.domain.core.DataSource
-import com.serioussem.currentweather.data.datasource.mappers.ApiResponseToDataModelMapper
-import com.serioussem.currentweather.data.datasource.models.DataWeatherModel
+import com.serioussem.currentweather.data.datasource.mappers.ApiModelToDataMapper
+import com.serioussem.currentweather.data.datasource.models.DataModel
 import javax.inject.Inject
 
 
 class RetrofitDataSource @Inject constructor(
-    private val retrofitService: RetrofitService,
-    private val apiModelMapper: ApiResponseToDataModelMapper,
+    private val service: RetrofitService,
+    private val mapper: ApiModelToDataMapper,
     private val resourceProvider: ResourceProvider
-): DataSource {
+) : DataSource<String, DataResult<DataModel>> {
 
-    override suspend fun fetchWeather(city: String): DataResult<DataWeatherModel?> {
-
-        return try {
-            val response = retrofitService.fetchWeather(city = city)
+    override suspend fun fetchWeather(city: String): DataResult<DataModel> =
+        try {
+            val response = service.fetchWeather(city = city)
             val responseBody = response.body()
 
             if (response.isSuccessful && responseBody != null) {
                 DataResult.Success(
-                    DataWeatherModel(
+                    DataModel(
                         city = city,
-                        temperature = apiModelMapper.map(responseBody)
+                        temperature = mapper.map(responseBody)
                     )
                 )
             } else {
@@ -37,5 +36,4 @@ class RetrofitDataSource @Inject constructor(
                 message = resourceProvider.string(R.string.failed_to_load_data)
             )
         }
-    }
 }

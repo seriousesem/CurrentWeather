@@ -7,6 +7,6 @@ import com.serioussem.currentweather.domain.repository.WeatherRepository
 import javax.inject.Inject
 
 class FetchWeatherUseCase @Inject constructor(private val repository: WeatherRepository) {
-    suspend fun fetchWeather(): MutableList<DomainResult<DomainModel?>> =
+    suspend fun fetchWeather(): MutableList<DomainResult<DomainModel>> =
         repository.fetchWeather()
 }

@@ -3,7 +3,7 @@ package com.serioussem.currentweather.data.datasource.models
 
 import com.google.gson.annotations.SerializedName
 
-data class ApiResponse(
+data class ApiModel(
 
     @field:SerializedName("visibility")
     val visibility: Int? = null,

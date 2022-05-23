@@ -6,7 +6,7 @@ import com.serioussem.currentweather.domain.models.DomainModel
 
 interface WeatherRepository{
 
-    suspend fun fetchWeather(): MutableList<DomainResult<DomainModel?>>
+    suspend fun fetchWeather(): MutableList<DomainResult<DomainModel>>
 
     fun saveUserCity(city: String)
 

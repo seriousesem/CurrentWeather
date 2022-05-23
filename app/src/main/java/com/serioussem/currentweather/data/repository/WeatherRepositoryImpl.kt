@@ -23,8 +23,6 @@ class WeatherRepositoryImpl @Inject constructor(
         mutableListOf(FIRST_CITY, SECOND_CITY)
     private var cacheCityList: MutableList<String> = mutableListOf()
     private var cityList: MutableList<String> = defaultCityList
-    private var remoteResult: DataResult<DataModel> = DataResult.Init()
-    private var cacheResult: DataResult<DataModel> = DataResult.Init()
     private val resultList = mutableListOf<DomainResult<DomainModel>>()
 
     override fun saveUserCity(city: String) {
@@ -32,15 +30,23 @@ class WeatherRepositoryImpl @Inject constructor(
             cityList.add(city)
         } else cityList[2] = city
     }
+    private fun updateCityList() {
+        when {
+            (cacheCityList.size < 3 || cityList.size == 3) -> cityList
+            else -> {
+                cityList.add(cacheCityList.removeLast())
+                cityList
+            }
+        }
+    }
 
     override suspend fun fetchWeather(): MutableList<DomainResult<DomainModel>> {
         updateCacheCityList()
         updateCityList()
-        Log.d("Sem", "cityList $cityList" )
-        Log.d("Sem", "cacheCityList $cacheCityList" )
+        Log.d("Sem", "cityList $cityList")
+        Log.d("Sem", "cacheCityList $cacheCityList")
         cityList.forEach { city ->
-            remoteResult = retrofitDataSource.fetchWeather(city = city)
-            when (remoteResult) {
+           when (val remoteResult = retrofitDataSource.fetchWeather(city = city)) {
                 is DataResult.Success -> {
                     roomDataSource.saveWeather(remoteResult.data as DataModel)
                     resultList.add(mapper.map(params = remoteResult))
@@ -48,22 +54,11 @@ class WeatherRepositoryImpl @Inject constructor(
                 else -> {
                     cityList.remove(cityList.removeLast())
                     resultList.add(mapper.map(params = remoteResult))
-                    cacheResult = roomDataSource.fetchWeather(city = city)
-                    resultList.add(mapper.map(params = cacheResult))
+                    resultList.add(mapper.map(params = roomDataSource.fetchWeather(city = city)))
                 }
             }
         }
         return resultList
-    }
-
-    private fun updateCityList() {
-        when {
-            (cacheCityList.size < 3 || cityList.size == 3) -> cityList
-            else -> {
-                cityList.add(cacheCityList.last())
-                cityList
-            }
-        }
     }
 
     private suspend fun updateCacheCityList() {

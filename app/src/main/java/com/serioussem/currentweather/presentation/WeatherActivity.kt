@@ -14,6 +14,8 @@ import com.serioussem.currentweather.domain.core.DomainResult
 import com.serioussem.currentweather.domain.models.DomainModel
 import dagger.hilt.android.AndroidEntryPoint
 
+
+
 @AndroidEntryPoint
 class WeatherActivity : AppCompatActivity() {
     private val binding by lazy(LazyThreadSafetyMode.NONE) {

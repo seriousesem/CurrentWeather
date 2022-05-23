@@ -33,9 +33,9 @@ class WeatherViewModel @Inject constructor(
         saveUserCityUseCase.saveUserCity(city = city)
 
     fun fetchWeather() {
+        weatherMutableList.value?.clear()
         dispatchers.launchBackground(viewModelScope) {
-            weatherMutableList.value =
-                fetchWeatherUseCase.fetchWeather()
+            weatherMutableList.postValue(fetchWeatherUseCase.fetchWeather())
         }
     }
 }

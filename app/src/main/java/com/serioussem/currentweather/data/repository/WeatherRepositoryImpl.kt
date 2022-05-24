@@ -40,13 +40,16 @@ class WeatherRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchWeather(): MutableList<DomainResult<DomainModel>> {
+    override suspend fun fetchWeather(): MutableList<DomainResult<DomainModel>> =
+        updateResultList()
+
+    private suspend fun updateResultList(): MutableList<DomainResult<DomainModel>>{
         updateCacheCityList()
         updateCityList()
         Log.d("Sem", "cityList $cityList")
         Log.d("Sem", "cacheCityList $cacheCityList")
         cityList.forEach { city ->
-           when (val remoteResult = retrofitDataSource.fetchWeather(city = city)) {
+            when (val remoteResult = retrofitDataSource.fetchWeather(city = city)) {
                 is DataResult.Success -> {
                     roomDataSource.saveWeather(remoteResult.data as DataModel)
                     resultList.add(mapper.map(params = remoteResult))

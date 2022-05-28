@@ -165,13 +165,20 @@
 
             <Button
                 android:id="@+id/btn_update_user_city"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/add_your_sity_name"
+                android:textAllCaps="false"
+                android:textSize="@dimen/font_size_20sp"
+                android:textColor = "@color/silver"
+                android:textAppearance = "?attr/textAppearanceButton"
+                app:elevation="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_user_city" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_user_city"
+                app:strokeColor="@color/silver" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

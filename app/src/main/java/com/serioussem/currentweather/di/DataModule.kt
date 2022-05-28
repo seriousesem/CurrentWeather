@@ -14,6 +14,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 
 @Module
@@ -24,14 +25,12 @@ object DataModule {
     fun provideRetrofitDataSource(
         service: RetrofitService,
         mapper: ApiModelToDataMapper,
-        resourceProvider: ResourceProvider,
-        internetConnection: InternetConnection
+        resourceProvider: ResourceProvider
     ): RetrofitDataSource =
         RetrofitDataSource(
             service = service,
             mapper = mapper,
-            resourceProvider = resourceProvider,
-            internetConnection = internetConnection
+            resourceProvider = resourceProvider
         )
 
     @Provides
@@ -45,14 +44,19 @@ object DataModule {
         )
 
     @Provides
+    @Singleton
     fun provideWeatherRepository(
         retrofitDataSource: RetrofitDataSource,
         roomDataSource: RoomDataSource,
-        mapper: DataResultToDomainMapper
+        mapper: DataResultToDomainMapper,
+        internetConnection: InternetConnection,
+        resourceProvider: ResourceProvider
     ): WeatherRepository =
         WeatherRepositoryImpl(
             retrofitDataSource = retrofitDataSource,
             roomDataSource = roomDataSource,
-            mapper = mapper
+            mapper = mapper,
+            internetConnection = internetConnection,
+            resourceProvider = resourceProvider
         )
 }

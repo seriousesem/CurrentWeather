@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Temp</string>
+    <string name="app_name">Поточна температура</string>
     <string name="no_internet_connection_message">Помилка підключення до інтернета, дані не оновлено</string>
     <string name="server_not_response">Сервер не відповідає</string>
     <string name="failed_to_load_data">Не вдалося завантажити данні з мережі</string>

@@ -1,6 +1,5 @@
 package com.serioussem.currentweather.domain.usecase
 
-
 import com.serioussem.currentweather.domain.core.DomainResult
 import com.serioussem.currentweather.domain.models.DomainModel
 import com.serioussem.currentweather.domain.repository.WeatherRepository

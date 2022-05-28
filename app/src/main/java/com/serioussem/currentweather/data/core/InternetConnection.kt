@@ -7,6 +7,7 @@ import android.os.Build
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+@Suppress("DEPRECATION")
 class InternetConnection @Inject constructor(
     @ApplicationContext private val context: Context
 ) {

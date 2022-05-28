@@ -3,8 +3,6 @@ package com.serioussem.currentweather.data.datasource.cache.room
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
 import com.serioussem.currentweather.data.datasource.models.DataModel
-
-
 @Dao
 interface WeatherDao {
 

@@ -1,16 +1,14 @@
 package com.serioussem.currentweather.data.datasource.cache.room
 
-
 import android.database.sqlite.SQLiteException
 import com.serioussem.currentweather.R
 import com.serioussem.currentweather.data.core.DataResult
+import com.serioussem.currentweather.data.core.DataSource
 import com.serioussem.currentweather.data.core.ResourceProvider
-import com.serioussem.currentweather.domain.core.DataSource
 import com.serioussem.currentweather.data.datasource.models.DataModel
 import com.serioussem.currentweather.utils.Constants.FIRST_CITY
 import com.serioussem.currentweather.utils.Constants.SECOND_CITY
 import javax.inject.Inject
-
 
 class RoomDataSource @Inject constructor(
     private val dao: WeatherDao,

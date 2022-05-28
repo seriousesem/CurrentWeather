@@ -1,6 +1,5 @@
 package com.serioussem.currentweather.presentation
 
-
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -13,8 +12,6 @@ import com.serioussem.currentweather.databinding.ActivityWeatherBinding
 import com.serioussem.currentweather.domain.core.DomainResult
 import com.serioussem.currentweather.domain.models.DomainModel
 import dagger.hilt.android.AndroidEntryPoint
-
-
 
 @AndroidEntryPoint
 class WeatherActivity : AppCompatActivity() {
@@ -115,5 +112,4 @@ class WeatherActivity : AppCompatActivity() {
 
     private fun updateTextView(temperature: Double): String =
         "$temperature ${resourceProvider.string(R.string.celsius)}"
-
 }

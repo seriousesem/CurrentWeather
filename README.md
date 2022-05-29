@@ -31,4 +31,8 @@
    *Kotlin Coroutines
    *Hilt: for dependency injection
    *Material Design Components
+   -------------------------------------------------------------------------------------------------   
+   Screenshots   
+   
+![Screenshot_2022-05-29-13-19-50-037_com serioussem currentweather](https://user-images.githubusercontent.com/9614629/170863372-d904ac41-938d-4798-8bd0-3155efc3c566.jpg)
 

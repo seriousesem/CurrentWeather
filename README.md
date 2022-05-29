@@ -17,22 +17,22 @@
 ---------------------------------------------------------------------------------------------------
 Для выполнения этого задания были использованы такие библиотеки:
 
-1. Foundation
-   *AppCompat
-   *Android KTX
-2. Architecture
-   *Data Binding
-   *Lifecycles
-   *LiveData
-   *ViewModel
-   *Room
-   *Retrofit
-3. Third party and miscellaneous libraries
-   *Kotlin Coroutines
-   *Hilt: for dependency injection
-   *Material Design Components
-   -------------------------------------------------------------------------------------------------   
-   Screenshots   
-   
-![Screenshot_2022-05-29-13-19-50-037_com serioussem currentweather](https://user-images.githubusercontent.com/9614629/170863372-d904ac41-938d-4798-8bd0-3155efc3c566.jpg)
+Foundation
+1.AppCompat
+2.Android KTX
+Architecture
+3.Data Binding
+4.Lifecycles
+5.LiveData
+6.ViewModel
+7.Room
+8.Retrofit
+Third party and miscellaneous libraries
+9.Kotlin Coroutines
+10.Hilt: for dependency injection
+11.Material Design Components
+-------------------------------------------------------------------------------------------------   
+Screenshots   
+
+![Screenshot_2022-05-29-13-19-50-037_com serioussem currentweather](https://user-images.githubusercontent.com/9614629/170863499-7aa25db9-6488-494e-b822-07772ea66e4e.jpg)
 

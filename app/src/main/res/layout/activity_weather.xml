@@ -154,6 +154,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_180dp"
                 android:autofillHints=""
+                android:gravity="center"
                 android:hint="@string/enter_your_sity_name"
                 android:inputType="text"
                 android:textSize="@dimen/font_size_22sp"
